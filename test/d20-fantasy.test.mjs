@@ -20,6 +20,14 @@ test('named d20 contracts and starter content prepare as one PlayBundle', () => 
     id: 'initiative.scenario-ordered',
     version: 1,
   });
+  const strengthModifier = d20FantasyRuleset.provides.values.find(
+    (value) => value.id === 'strength-modifier',
+  );
+  const initiative = d20FantasyRuleset.provides.values.find(
+    (value) => value.id === 'initiative',
+  );
+  assert.equal(strengthModifier?.source.kind, 'derived');
+  assert.equal(initiative?.source.kind, 'derived');
 
   const result = prepareD20FantasyStarterPlayBundle();
   assert.equal(result.ok, true, result.ok ? undefined : canonicalJson(result.diagnostics));
@@ -29,6 +37,24 @@ test('named d20 contracts and starter content prepare as one PlayBundle', () => 
     (definition) => definition.semantic.catalog === 'participantProfile',
   );
   assert.equal(profiles.length, 4);
+  const derivedIds = new Set([
+    'strength-modifier',
+    'dexterity-modifier',
+    'constitution-modifier',
+    'intelligence-modifier',
+    'wisdom-modifier',
+    'charisma-modifier',
+    'initiative',
+  ]);
+  for (const profile of profiles) {
+    assert.equal(
+      profile.semantic.data.capabilities.some(
+        (capability) => derivedIds.has(capability.id),
+      ),
+      false,
+      `${profile.id} must leave derived values to Rust authority`,
+    );
+  }
   assert.ok(result.prepared.derivationProvenance.length >= 2);
   assert.ok(result.prepared.materializedDefinitions.some(
     (definition) => definition.semantic.catalog === 'modifier' && definition.semantic.id === 'prone',

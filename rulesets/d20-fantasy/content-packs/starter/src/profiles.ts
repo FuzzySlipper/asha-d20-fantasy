@@ -68,7 +68,6 @@ export const fighterProfileData: ContentParticipantProfileData = Object.freeze({
     ...abilities([16, 14, 14, 10, 12, 10]),
     stat(d20FantasyValues.MeleeAttackBonus, 5),
     stat(d20FantasyValues.SpellAttackBonus, 0),
-    stat(d20FantasyValues.Initiative, 2),
     ...defenses({ armorClass: 16, strength: 5, dexterity: 2, constitution: 4, intelligence: 0, wisdom: 1, charisma: 0 }),
     resource('second-wind', 1),
   ]),
@@ -86,7 +85,6 @@ export const wizardProfileData: ContentParticipantProfileData = Object.freeze({
     ...abilities([8, 14, 14, 16, 12, 10]),
     stat(d20FantasyValues.MeleeAttackBonus, 1),
     stat(d20FantasyValues.SpellAttackBonus, 5),
-    stat(d20FantasyValues.Initiative, 2),
     ...defenses({ armorClass: 12, strength: -1, dexterity: 2, constitution: 2, intelligence: 5, wisdom: 3, charisma: 0 }),
     resource('spell-slot', 2),
   ]),
@@ -100,7 +98,6 @@ export const goblinProfileData: ContentParticipantProfileData = Object.freeze({
     ...abilities([8, 15, 10, 10, 8, 8]),
     stat(d20FantasyValues.MeleeAttackBonus, 4),
     stat(d20FantasyValues.SpellAttackBonus, 0),
-    stat(d20FantasyValues.Initiative, 2),
     ...defenses({ armorClass: 15, strength: -1, dexterity: 2, constitution: 0, intelligence: 0, wisdom: -1, charisma: -1 }),
   ]),
 });
@@ -113,7 +110,6 @@ export const skeletonProfileData: ContentParticipantProfileData = Object.freeze(
     ...abilities([10, 16, 15, 6, 8, 5]),
     stat(d20FantasyValues.MeleeAttackBonus, 5),
     stat(d20FantasyValues.SpellAttackBonus, 0),
-    stat(d20FantasyValues.Initiative, 3),
     ...defenses({ armorClass: 14, strength: 0, dexterity: 3, constitution: 2, intelligence: -2, wisdom: -1, charisma: -3 }),
   ]),
 });
@@ -233,7 +229,6 @@ function defense(
 function abilities(
   scores: readonly [number, number, number, number, number, number],
 ): readonly ScenarioInitialCapability[] {
-  const modifiers = scores.map(abilityModifier);
   return [
     stat(d20FantasyValues.Strength, scores[0]),
     stat(d20FantasyValues.Dexterity, scores[1]),
@@ -241,17 +236,7 @@ function abilities(
     stat(d20FantasyValues.Intelligence, scores[3]),
     stat(d20FantasyValues.Wisdom, scores[4]),
     stat(d20FantasyValues.Charisma, scores[5]),
-    stat(d20FantasyValues.StrengthModifier, modifiers[0] ?? 0),
-    stat(d20FantasyValues.DexterityModifier, modifiers[1] ?? 0),
-    stat(d20FantasyValues.ConstitutionModifier, modifiers[2] ?? 0),
-    stat(d20FantasyValues.IntelligenceModifier, modifiers[3] ?? 0),
-    stat(d20FantasyValues.WisdomModifier, modifiers[4] ?? 0),
-    stat(d20FantasyValues.CharismaModifier, modifiers[5] ?? 0),
   ];
-}
-
-function abilityModifier(score: number): number {
-  return Math.floor((score - 10) / 2);
 }
 
 function defenses(input: {

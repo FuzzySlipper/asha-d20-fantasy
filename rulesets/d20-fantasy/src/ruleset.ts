@@ -4,11 +4,19 @@ import {
 } from '@asha-rpg/ir';
 
 import {
+  derivedRulesetValue,
   defineRuleset,
+  floorDivideRulesetValues,
+  readRulesetValue,
   rulesetDefense,
   rulesetStat,
+  rulesetValueConstant,
+  subtractRulesetValues,
 } from '@asha-rpg/authoring';
-import type { RulesetValueReference } from '@asha-rpg/authoring';
+import type {
+  RulesetValueReference,
+  RulesetValueSource,
+} from '@asha-rpg/authoring';
 
 type D20StatReference = RulesetValueReference<'stat', string, string>;
 type D20DefenseReference = RulesetValueReference<'defense', string, string>;
@@ -38,7 +46,7 @@ export interface D20FantasyValueReferences {
   readonly CharismaSave: D20DefenseReference;
 }
 
-export const d20FantasyRuleset = defineRuleset({
+const d20FantasyValueVocabulary = defineRuleset({
   schema: { identity: 'asha.rpg.ruleset', major: 1 },
   identity: { id: 'asha.d20-fantasy', version: '1.0.0' },
   language: { id: 'asha-rpg', version: '1.0.0' },
@@ -90,6 +98,47 @@ export const d20FantasyRuleset = defineRuleset({
   },
 });
 
+const vocabularyValues = Object.freeze({
+  Strength: rulesetStat(d20FantasyValueVocabulary, 'strength'),
+  Dexterity: rulesetStat(d20FantasyValueVocabulary, 'dexterity'),
+  Constitution: rulesetStat(d20FantasyValueVocabulary, 'constitution'),
+  Intelligence: rulesetStat(d20FantasyValueVocabulary, 'intelligence'),
+  Wisdom: rulesetStat(d20FantasyValueVocabulary, 'wisdom'),
+  Charisma: rulesetStat(d20FantasyValueVocabulary, 'charisma'),
+  DexterityModifier: rulesetStat(
+    d20FantasyValueVocabulary,
+    'dexterity-modifier',
+  ),
+});
+
+const derivedValueSources: Readonly<Record<string, RulesetValueSource>> =
+  Object.freeze({
+    'strength-modifier': deriveAbilityModifier(vocabularyValues.Strength),
+    'dexterity-modifier': deriveAbilityModifier(vocabularyValues.Dexterity),
+    'constitution-modifier': deriveAbilityModifier(
+      vocabularyValues.Constitution,
+    ),
+    'intelligence-modifier': deriveAbilityModifier(
+      vocabularyValues.Intelligence,
+    ),
+    'wisdom-modifier': deriveAbilityModifier(vocabularyValues.Wisdom),
+    'charisma-modifier': deriveAbilityModifier(vocabularyValues.Charisma),
+    initiative: derivedRulesetValue(
+      readRulesetValue(vocabularyValues.DexterityModifier),
+    ),
+  });
+
+export const d20FantasyRuleset = defineRuleset({
+  ...d20FantasyValueVocabulary,
+  provides: {
+    ...d20FantasyValueVocabulary.provides,
+    values: d20FantasyValueVocabulary.provides.values.map((value) => ({
+      ...value,
+      source: derivedValueSources[value.id] ?? value.source,
+    })),
+  },
+});
+
 export const d20FantasyValues: D20FantasyValueReferences = Object.freeze({
   Strength: rulesetStat(d20FantasyRuleset, 'strength'),
   Dexterity: rulesetStat(d20FantasyRuleset, 'dexterity'),
@@ -125,4 +174,16 @@ function signedStat(id: string, label: string) {
 
 function defense(id: string, label: string, numericDomainId = 'signed-bonus') {
   return { kind: 'defense' as const, id, label, numericDomainId };
+}
+
+function deriveAbilityModifier(score: D20StatReference): RulesetValueSource {
+  return derivedRulesetValue(
+    floorDivideRulesetValues(
+      subtractRulesetValues(
+        readRulesetValue(score),
+        rulesetValueConstant(10),
+      ),
+      rulesetValueConstant(2),
+    ),
+  );
 }

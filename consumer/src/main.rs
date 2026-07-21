@@ -31,6 +31,13 @@ fn main() {
         binding: scenario.random_source.clone(),
     };
     let mut session = RpgAuthoritySession::from_scenario(bundle, scenario).expect("start Scenario");
+    let fighter = session.state().entity("fighter").expect("fighter state");
+    assert_eq!(fighter.stat("strength-modifier"), Some(3));
+    assert_eq!(fighter.stat("dexterity-modifier"), Some(2));
+    assert_eq!(fighter.stat("initiative"), Some(2));
+    let skeleton = session.state().entity("skeleton").expect("skeleton state");
+    assert_eq!(skeleton.stat("dexterity-modifier"), Some(3));
+    assert_eq!(skeleton.stat("initiative"), Some(3));
 
     accept(action(
         &mut session,
