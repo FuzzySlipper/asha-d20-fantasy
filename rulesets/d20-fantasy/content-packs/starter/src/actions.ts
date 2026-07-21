@@ -82,7 +82,7 @@ export const longSwordBase = defineActionDefinition({
             dice({ count: 1, sides: 8 }),
             readStat('actor', d20FantasyValues.StrengthModifier),
           ),
-          type: starterCatalogs.references.bludgeoning,
+          type: starterCatalogs.references.slashing,
         }),
       ),
     }),
@@ -171,7 +171,7 @@ export const shieldBash = publicAction('action.fighter.shield-bash', 'Shield Bas
             dice({ count: 1, sides: 4 }),
             readStat('actor', d20FantasyValues.StrengthModifier),
           ),
-          type: starterCatalogs.references.slashing,
+          type: starterCatalogs.references.bludgeoning,
         }),
         applyModifier({
           modifier: starterCatalogs.references.prone,

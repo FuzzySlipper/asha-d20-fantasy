@@ -35,6 +35,15 @@ test('named d20 contracts and starter content prepare as one PlayBundle', () => 
   ));
 });
 
+test('starter weapon damage types match the cited SRD weapon table', () => {
+  const result = prepareD20FantasyStarterPlayBundle();
+  assert.equal(result.ok, true, result.ok ? undefined : canonicalJson(result.diagnostics));
+  if (!result.ok) return;
+
+  assert.deepEqual(damageTypesFor(result.prepared, 'action.fighter.long-sword'), ['slashing']);
+  assert.deepEqual(damageTypesFor(result.prepared, 'action.fighter.shield-bash'), ['bludgeoning']);
+});
+
 test('Rust compiles and reloads the real starter artifact', () => {
   const result = prepareD20FantasyStarterPlayBundle();
   assert.equal(result.ok, true, result.ok ? undefined : canonicalJson(result.diagnostics));
@@ -113,4 +122,23 @@ function rustCommand(binary, input) {
     ],
     { encoding: 'utf8', input },
   );
+}
+
+function damageTypesFor(prepared, definitionId) {
+  const definition = prepared.materializedDefinitions.find(
+    (candidate) => candidate.id === definitionId,
+  );
+  assert.ok(definition, `missing materialized definition ${definitionId}`);
+
+  const damageTypes = [];
+  visit(definition.semantic.program, (value) => {
+    if (value.kind === 'damage') damageTypes.push(value.damageType);
+  });
+  return damageTypes;
+}
+
+function visit(value, inspect) {
+  if (value === null || typeof value !== 'object') return;
+  inspect(value);
+  for (const child of Object.values(value)) visit(child, inspect);
 }
