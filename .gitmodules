@@ -1,0 +1,3 @@
+[submodule "vendor/asha-rpg"]
+	path = vendor/asha-rpg
+	url = https://github.com/FuzzySlipper/asha-rpg.git

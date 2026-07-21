@@ -1,0 +1,12 @@
+{
+  "extends": "./vendor/asha-rpg/tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
+  },
+  "include": [
+    "rulesets/**/*.ts"
+  ]
+}
+

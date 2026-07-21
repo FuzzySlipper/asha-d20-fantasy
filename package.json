@@ -1,0 +1,25 @@
+{
+  "name": "@asha-rules/d20-fantasy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "CC-BY-4.0",
+  "description": "Independent d20 fantasy Ruleset and starter Content Pack for ASHA RPG.",
+  "exports": {
+    ".": "./dist/rulesets/d20-fantasy/src/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check:types": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "emit:prepared": "npm run --silent build && node scripts/emit-prepared.mjs",
+    "play:smoke": "npm run build && node scripts/emit-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml"
+  },
+  "dependencies": {
+    "@asha-rpg/authoring": "file:vendor/asha-rpg/packages/authoring",
+    "@asha-rpg/ir": "file:vendor/asha-rpg/packages/ir"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  }
+}
