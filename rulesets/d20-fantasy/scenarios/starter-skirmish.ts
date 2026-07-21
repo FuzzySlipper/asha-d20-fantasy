@@ -147,7 +147,10 @@ function participant(
     label,
     teamId,
     position: { x, y },
-    definitionIds: [profileDefinitionId, ...profile.definitionIds],
+    definitionIds: [
+      profileDefinitionId,
+      ...profile.definitionReferences.map((reference) => reference.definitionId),
+    ],
     capabilities: profile.capabilities,
   };
 }

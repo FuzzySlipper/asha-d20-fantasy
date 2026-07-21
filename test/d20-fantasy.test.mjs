@@ -6,6 +6,7 @@ import { canonicalJson, defineRuleset, preparePlayBundle } from '@asha-rpg/autho
 
 import {
   d20FantasyRuleset,
+  d20FantasyStarterContentPack,
   d20FantasyStarterContentSource,
   d20FantasyStarterPlayBundle,
   d20FantasyValues,
@@ -37,6 +38,10 @@ test('named d20 contracts and starter content prepare as one PlayBundle', () => 
     (definition) => definition.semantic.catalog === 'participantProfile',
   );
   assert.equal(profiles.length, 4);
+  assert.deepEqual(d20FantasyStarterContentPack.requirements.values, []);
+  assert.deepEqual(d20FantasyStarterContentPack.requirements.numericDomains, []);
+  assert.ok(result.prepared.contentRequirements.values.length > 0);
+  assert.ok(result.prepared.contentRequirements.numericDomains.length > 0);
   const derivedIds = new Set([
     'strength-modifier',
     'dexterity-modifier',
@@ -128,7 +133,7 @@ test('an incompatible Ruleset reports the missing content requirement directly',
   if (result.ok) return;
   assert.ok(result.diagnostics.some(
     (diagnostic) =>
-      diagnostic.code === 'CONTENT_PACK_OPERATION_REQUIREMENT_MISSING' &&
+      diagnostic.code === 'PLAY_BUNDLE_OPERATION_REQUIREMENT_MISSING' &&
       diagnostic.message.includes('operation.openReaction'),
   ));
 });

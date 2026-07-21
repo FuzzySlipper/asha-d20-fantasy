@@ -1,16 +1,21 @@
 import {
   defineParticipantProfileDefinition,
+  defineParticipantProfileData,
   defineSupportDefinition,
   definitionReference,
-  rulesetValueId,
+  participantProfileDefense,
+  participantProfileResource,
+  participantProfileStat,
+  participantProfileVitality,
   withLowLevelDefinitionReferences,
 } from '@asha-rpg/authoring';
 import type {
+  ContentParticipantProfileCapability,
   ContentParticipantProfileData,
-  ScenarioInitialCapability,
 } from '@asha-rpg/authoring';
 
 import { d20FantasyValues } from '../../../src/ruleset.js';
+import { starterCatalogs } from './catalogs.js';
 
 const sourceModule = 'rulesets/d20-fantasy/content-packs/starter/src/profiles.ts';
 
@@ -54,9 +59,9 @@ export const shortSwordItem = itemDefinition(
   ['item', 'weapon'],
 );
 
-export const fighterProfileData: ContentParticipantProfileData = Object.freeze({
+export const fighterProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'player',
-  definitionIds: Object.freeze([
+  definitionReferences: references([
     'action.fighter.long-sword',
     'action.fighter.shield-bash',
     'action.fighter.second-wind',
@@ -64,52 +69,58 @@ export const fighterProfileData: ContentParticipantProfileData = Object.freeze({
     shieldItem.id,
   ]),
   capabilities: Object.freeze([
-    vitality(12),
+    participantProfileVitality({ current: 12, max: 12 }),
     ...abilities([16, 14, 14, 10, 12, 10]),
-    stat(d20FantasyValues.MeleeAttackBonus, 5),
-    stat(d20FantasyValues.SpellAttackBonus, 0),
+    participantProfileStat(d20FantasyValues.MeleeAttackBonus, 5),
+    participantProfileStat(d20FantasyValues.SpellAttackBonus, 0),
     ...defenses({ armorClass: 16, strength: 5, dexterity: 2, constitution: 4, intelligence: 0, wisdom: 1, charisma: 0 }),
-    resource('second-wind', 1),
+    participantProfileResource(
+      starterCatalogs.references.secondWind,
+      { current: 1, max: 1 },
+    ),
   ]),
 });
 
-export const wizardProfileData: ContentParticipantProfileData = Object.freeze({
+export const wizardProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'player',
-  definitionIds: Object.freeze([
+  definitionReferences: references([
     'action.wizard.fire-bolt',
     'action.wizard.thunder-wave',
     arcaneFocusItem.id,
   ]),
   capabilities: Object.freeze([
-    vitality(8),
+    participantProfileVitality({ current: 8, max: 8 }),
     ...abilities([8, 14, 14, 16, 12, 10]),
-    stat(d20FantasyValues.MeleeAttackBonus, 1),
-    stat(d20FantasyValues.SpellAttackBonus, 5),
+    participantProfileStat(d20FantasyValues.MeleeAttackBonus, 1),
+    participantProfileStat(d20FantasyValues.SpellAttackBonus, 5),
     ...defenses({ armorClass: 12, strength: -1, dexterity: 2, constitution: 2, intelligence: 5, wisdom: 3, charisma: 0 }),
-    resource('spell-slot', 2),
+    participantProfileResource(
+      starterCatalogs.references.spellSlot,
+      { current: 2, max: 2 },
+    ),
   ]),
 });
 
-export const goblinProfileData: ContentParticipantProfileData = Object.freeze({
+export const goblinProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'creature',
-  definitionIds: Object.freeze(['action.goblin.scimitar', scimitarItem.id]),
+  definitionReferences: references(['action.goblin.scimitar', scimitarItem.id]),
   capabilities: Object.freeze([
-    vitality(10),
+    participantProfileVitality({ current: 10, max: 10 }),
     ...abilities([8, 15, 10, 10, 8, 8]),
-    stat(d20FantasyValues.MeleeAttackBonus, 4),
-    stat(d20FantasyValues.SpellAttackBonus, 0),
+    participantProfileStat(d20FantasyValues.MeleeAttackBonus, 4),
+    participantProfileStat(d20FantasyValues.SpellAttackBonus, 0),
     ...defenses({ armorClass: 15, strength: -1, dexterity: 2, constitution: 0, intelligence: 0, wisdom: -1, charisma: -1 }),
   ]),
 });
 
-export const skeletonProfileData: ContentParticipantProfileData = Object.freeze({
+export const skeletonProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'creature',
-  definitionIds: Object.freeze(['action.skeleton.short-sword', shortSwordItem.id]),
+  definitionReferences: references(['action.skeleton.short-sword', shortSwordItem.id]),
   capabilities: Object.freeze([
-    vitality(13),
+    participantProfileVitality({ current: 13, max: 13 }),
     ...abilities([10, 16, 15, 6, 8, 5]),
-    stat(d20FantasyValues.MeleeAttackBonus, 5),
-    stat(d20FantasyValues.SpellAttackBonus, 0),
+    participantProfileStat(d20FantasyValues.MeleeAttackBonus, 5),
+    participantProfileStat(d20FantasyValues.SpellAttackBonus, 0),
     ...defenses({ armorClass: 14, strength: 0, dexterity: 3, constitution: 2, intelligence: -2, wisdom: -1, charisma: -3 }),
   ]),
 });
@@ -204,38 +215,16 @@ function profileDefinition(
   });
 }
 
-function vitality(maximum: number): ScenarioInitialCapability {
-  return { owner: 'vitality', value: { current: maximum, max: maximum } };
-}
-
-function resource(id: string, maximum: number): ScenarioInitialCapability {
-  return { owner: 'resource', id, value: { current: maximum, max: maximum } };
-}
-
-function stat(
-  reference: Parameters<typeof rulesetValueId>[0],
-  value: number,
-): ScenarioInitialCapability {
-  return { owner: 'stat', id: rulesetValueId(reference), value };
-}
-
-function defense(
-  reference: Parameters<typeof rulesetValueId>[0],
-  value: number,
-): ScenarioInitialCapability {
-  return { owner: 'defense', id: rulesetValueId(reference), value };
-}
-
 function abilities(
   scores: readonly [number, number, number, number, number, number],
-): readonly ScenarioInitialCapability[] {
+): readonly ContentParticipantProfileCapability[] {
   return [
-    stat(d20FantasyValues.Strength, scores[0]),
-    stat(d20FantasyValues.Dexterity, scores[1]),
-    stat(d20FantasyValues.Constitution, scores[2]),
-    stat(d20FantasyValues.Intelligence, scores[3]),
-    stat(d20FantasyValues.Wisdom, scores[4]),
-    stat(d20FantasyValues.Charisma, scores[5]),
+    participantProfileStat(d20FantasyValues.Strength, scores[0]),
+    participantProfileStat(d20FantasyValues.Dexterity, scores[1]),
+    participantProfileStat(d20FantasyValues.Constitution, scores[2]),
+    participantProfileStat(d20FantasyValues.Intelligence, scores[3]),
+    participantProfileStat(d20FantasyValues.Wisdom, scores[4]),
+    participantProfileStat(d20FantasyValues.Charisma, scores[5]),
   ];
 }
 
@@ -247,14 +236,18 @@ function defenses(input: {
   readonly intelligence: number;
   readonly wisdom: number;
   readonly charisma: number;
-}): readonly ScenarioInitialCapability[] {
+}): readonly ContentParticipantProfileCapability[] {
   return [
-    defense(d20FantasyValues.ArmorClass, input.armorClass),
-    defense(d20FantasyValues.StrengthSave, input.strength),
-    defense(d20FantasyValues.DexteritySave, input.dexterity),
-    defense(d20FantasyValues.ConstitutionSave, input.constitution),
-    defense(d20FantasyValues.IntelligenceSave, input.intelligence),
-    defense(d20FantasyValues.WisdomSave, input.wisdom),
-    defense(d20FantasyValues.CharismaSave, input.charisma),
+    participantProfileDefense(d20FantasyValues.ArmorClass, input.armorClass),
+    participantProfileDefense(d20FantasyValues.StrengthSave, input.strength),
+    participantProfileDefense(d20FantasyValues.DexteritySave, input.dexterity),
+    participantProfileDefense(d20FantasyValues.ConstitutionSave, input.constitution),
+    participantProfileDefense(d20FantasyValues.IntelligenceSave, input.intelligence),
+    participantProfileDefense(d20FantasyValues.WisdomSave, input.wisdom),
+    participantProfileDefense(d20FantasyValues.CharismaSave, input.charisma),
   ];
+}
+
+function references(definitionIds: readonly string[]) {
+  return definitionIds.map((definitionId) => definitionReference({ definitionId }));
 }
