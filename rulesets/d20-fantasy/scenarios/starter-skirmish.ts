@@ -1,7 +1,11 @@
-import { defineScenario } from '@asha-rpg/authoring';
+import {
+  defineScenarioTemplate,
+  instantiateScenarioTemplate,
+} from '@asha-rpg/authoring';
 import type {
   ContentParticipantProfileData,
   Scenario,
+  ScenarioTemplate,
 } from '@asha-rpg/authoring';
 
 import {
@@ -14,24 +18,109 @@ import {
   wizardProfile,
   wizardProfileData,
 } from '../content-packs/starter/src/profiles.js';
+import { d20FantasyStarterPlayBundle } from '../play-bundles/starter.js';
+
+export const frontlineDuelScenarioTemplate = scenarioTemplate(
+  'asha.d20-fantasy.scenario.frontline-duel',
+  'Frontline Duel',
+  'A focused Fighter and Goblin duel for melee checks, damage, reactions, healing, and conditions.',
+  5,
+  3,
+  [
+    participant(
+      'fighter',
+      'Fighter',
+      'heroes',
+      1,
+      1,
+      fighterProfile.id,
+      fighterProfileData,
+    ),
+    participant(
+      'goblin',
+      'Goblin Warrior',
+      'monsters',
+      2,
+      1,
+      goblinProfile.id,
+      goblinProfileData,
+    ),
+  ],
+  ['fighter', 'goblin'],
+);
+
+export const starterSkirmishScenarioTemplate = scenarioTemplate(
+  'asha.d20-fantasy.scenario.starter-skirmish',
+  'Starter Skirmish',
+  'Fighter and Wizard face a Goblin Warrior and Skeleton with room for melee and ranged actions.',
+  7,
+  5,
+  [
+    participant(
+      'fighter',
+      'Fighter',
+      'heroes',
+      2,
+      2,
+      fighterProfile.id,
+      fighterProfileData,
+    ),
+    participant(
+      'wizard',
+      'Wizard',
+      'heroes',
+      1,
+      3,
+      wizardProfile.id,
+      wizardProfileData,
+    ),
+    participant(
+      'goblin',
+      'Goblin Warrior',
+      'monsters',
+      3,
+      2,
+      goblinProfile.id,
+      goblinProfileData,
+    ),
+    participant(
+      'skeleton',
+      'Skeleton',
+      'monsters',
+      2,
+      3,
+      skeletonProfile.id,
+      skeletonProfileData,
+    ),
+  ],
+  ['skeleton', 'fighter', 'wizard', 'goblin'],
+);
 
 export function starterSkirmishScenario(playBundleId: string): Scenario {
-  return defineScenario({
+  return instantiateScenarioTemplate(
+    starterSkirmishScenarioTemplate,
     playBundleId,
-    board: {
-      width: 7,
-      height: 5,
-      cells: [],
-    },
-    participants: [
-      participant('fighter', 'Fighter', 'heroes', 2, 2, fighterProfile.id, fighterProfileData),
-      participant('wizard', 'Wizard', 'heroes', 1, 3, wizardProfile.id, wizardProfileData),
-      participant('goblin', 'Goblin Warrior', 'monsters', 3, 2, goblinProfile.id, goblinProfileData),
-      participant('skeleton', 'Skeleton', 'monsters', 2, 3, skeletonProfile.id, skeletonProfileData),
-    ],
+  );
+}
+
+function scenarioTemplate(
+  id: string,
+  label: string,
+  description: string,
+  width: number,
+  height: number,
+  participants: ScenarioTemplate['participants'],
+  initiativeOrder: readonly string[],
+): ScenarioTemplate {
+  return defineScenarioTemplate({
+    identity: { id, version: '1.0.0' },
+    playBundle: d20FantasyStarterPlayBundle.identity,
+    presentation: { label, description },
+    board: { width, height, cells: [] },
+    participants,
     turn: {
-      initiativeOrder: ['skeleton', 'fighter', 'wizard', 'goblin'],
-      currentActorId: 'skeleton',
+      initiativeOrder,
+      currentActorId: initiativeOrder[0] ?? '',
       round: 1,
       turn: 1,
     },
