@@ -96,6 +96,7 @@ export const starterSkirmishScenarioTemplate = scenarioTemplate(
     ),
   ],
   ['skeleton', 'fighter', 'wizard', 'goblin'],
+  [{ x: 3, y: 3 }],
 );
 
 export function starterSkirmishScenario(playBundleId: string): Scenario {
@@ -113,12 +114,17 @@ function scenarioTemplate(
   height: number,
   participants: ScenarioTemplate['participants'],
   initiativeOrder: readonly string[],
+  impassableCells: readonly { readonly x: number; readonly y: number }[] = [],
 ): ScenarioTemplate {
   return defineScenarioTemplate({
     identity: { id, version: '1.0.0' },
     playBundle: d20FantasyStarterPlayBundle.identity,
     presentation: { label, description },
-    board: { width, height, cells: boardCells(width, height) },
+    board: {
+      width,
+      height,
+      cells: boardCells(width, height, impassableCells),
+    },
     participants,
     turn: {
       initiativeOrder,
@@ -135,14 +141,33 @@ function scenarioTemplate(
   });
 }
 
-function boardCells(width: number, height: number) {
+function boardCells(
+  width: number,
+  height: number,
+  impassableCells: readonly { readonly x: number; readonly y: number }[],
+) {
   return Array.from({ length: width * height }, (_unused, index) => {
     const x = index % width;
     const y = Math.floor(index / width);
+    const impassable = impassableCells.some(
+      (position) => position.x === x && position.y === y,
+    );
     return {
       id: `cell-${x}-${y}`,
       position: { x, y },
-      capabilities: [],
+      capabilities: impassable
+        ? [
+            {
+              id: 'capability.traversal',
+              version: 1,
+              value: {
+                kind: 'traversal' as const,
+                passable: false,
+                movementCost: 1,
+              },
+            },
+          ]
+        : [],
     };
   });
 }

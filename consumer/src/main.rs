@@ -45,17 +45,27 @@ fn main() {
         .into_iter()
         .find(|action| action.definition_id == "action.move")
         .expect("current actor owns Move");
-    assert!(movement.options.cell_ids.contains(&"cell-2-4".to_owned()));
+    let detour = movement
+        .options
+        .cell_paths
+        .iter()
+        .find(|path| path.destination_cell_id == "cell-4-3")
+        .expect("Move exposes the route around the impassable cell");
+    assert_eq!(
+        detour.cell_ids,
+        vec!["cell-2-4", "cell-3-4", "cell-4-4", "cell-4-3"]
+    );
+    assert_eq!(detour.movement_cost, 4);
     accept(action(
         &mut session,
         &mut random,
         "action.move",
         "skeleton",
-        &["cell-2-4"],
+        &["cell-4-3"],
     ));
     assert_eq!(
         session.state().entity("skeleton").unwrap().position(),
-        asha_rpg::GridPosition { x: 2, y: 4 }
+        asha_rpg::GridPosition { x: 4, y: 3 }
     );
 
     let pending = action(
@@ -83,7 +93,7 @@ fn main() {
     accept(action(
         &mut session,
         &mut random,
-        "action.wizard.thunder-wave",
+        "action.wizard.fire-bolt",
         "wizard",
         &["skeleton"],
     ));

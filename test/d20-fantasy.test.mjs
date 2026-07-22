@@ -98,6 +98,14 @@ test('Rust compiles and reloads the real starter artifact', () => {
   assert.equal(scenario.participants.length, 4);
   assert.equal(scenario.board.cells.length, 35);
   assert.equal(new Set(scenario.board.cells.map((cell) => cell.id)).size, 35);
+  assert.deepEqual(
+    scenario.board.cells.find((cell) => cell.id === 'cell-3-3')?.capabilities,
+    [{
+      id: 'capability.traversal',
+      version: 1,
+      value: { kind: 'traversal', passable: false, movementCost: 1 },
+    }],
+  );
   assert.ok(scenario.participants.every((participant) =>
     participant.definitionIds.includes('action.move')
   ));
