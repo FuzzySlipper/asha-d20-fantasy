@@ -14,10 +14,10 @@ import type {
   ContentParticipantProfileData,
 } from '@asha-rpg/authoring';
 
-import { d20FantasyValues } from '../../../src/ruleset.js';
+import { d20FantasyValues } from '../../../rulesets/d20-fantasy/src/ruleset.js';
 import { starterCatalogs } from './catalogs.js';
 
-const sourceModule = 'rulesets/d20-fantasy/content-packs/starter/src/profiles.ts';
+const sourceModule = 'content-packs/starter/src/profiles.ts';
 
 export const longSwordItem = itemDefinition(
   'item.long-sword',

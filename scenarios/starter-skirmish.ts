@@ -8,6 +8,8 @@ import type {
   ScenarioTemplate,
 } from '@asha-rpg/authoring';
 
+// Scenario setup composes peer Content Pack and PlayBundle roots only.
+
 import {
   fighterProfile,
   fighterProfileData,

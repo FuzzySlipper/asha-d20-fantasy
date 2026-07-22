@@ -6,7 +6,10 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
   "include": [
-    "rulesets/**/*.ts"
+    "src/**/*.ts",
+    "rulesets/**/*.ts",
+    "content-packs/**/*.ts",
+    "play-bundles/**/*.ts",
+    "scenarios/**/*.ts"
   ]
 }
-

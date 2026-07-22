@@ -16,7 +16,7 @@ import {
 export const d20FantasyStarterContentPack = defineContentPack({
   identity: { id: 'asha.d20-fantasy.starter', version: '1.0.0' },
   entry: {
-    module: 'rulesets/d20-fantasy/content-packs/starter/src/content-pack.ts',
+    module: 'content-packs/starter/src/content-pack.ts',
     declaration: 'd20FantasyStarterContentPack',
   },
   definitions: [

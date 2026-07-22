@@ -4,9 +4,13 @@
   "private": true,
   "type": "module",
   "license": "CC-BY-4.0",
-  "description": "Independent d20 fantasy Ruleset and starter Content Pack for ASHA RPG.",
+  "description": "Independent d20 fantasy Ruleset, starter Content Pack, PlayBundle, and Scenarios for ASHA RPG.",
   "exports": {
-    ".": "./dist/rulesets/d20-fantasy/src/index.js"
+    ".": "./dist/src/index.js",
+    "./rulesets/d20-fantasy": "./dist/rulesets/d20-fantasy/src/index.js",
+    "./content-packs/starter": "./dist/content-packs/starter/src/index.js",
+    "./play-bundles/starter": "./dist/play-bundles/starter.js",
+    "./scenarios/starter-skirmish": "./dist/scenarios/starter-skirmish.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

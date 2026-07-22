@@ -12,7 +12,7 @@ import {
   d20FantasyValues,
   prepareD20FantasyStarterPlayBundle,
   starterSkirmishScenario,
-} from '../dist/rulesets/d20-fantasy/src/index.js';
+} from '../dist/src/index.js';
 
 test('named d20 contracts and starter content prepare as one PlayBundle', () => {
   assert.equal(d20FantasyValues.Strength.id, 'strength');

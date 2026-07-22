@@ -1,6 +1,6 @@
 import { canonicalJson } from '@asha-rpg/authoring';
 
-import { prepareD20FantasyStarterPlayBundle } from '../dist/rulesets/d20-fantasy/src/index.js';
+import { prepareD20FantasyStarterPlayBundle } from '../dist/src/index.js';
 
 const result = prepareD20FantasyStarterPlayBundle();
 if (!result.ok) {
@@ -8,4 +8,3 @@ if (!result.ok) {
 }
 
 process.stdout.write(canonicalJson(result.prepared));
-

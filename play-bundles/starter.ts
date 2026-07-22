@@ -8,7 +8,7 @@ import {
   d20FantasyStarterContentPack,
   d20FantasyStarterContentSource,
 } from '../content-packs/starter/src/content-pack.js';
-import { d20FantasyRuleset } from '../src/ruleset.js';
+import { d20FantasyRuleset } from '../rulesets/d20-fantasy/src/ruleset.js';
 
 export const d20FantasyStarterPlayBundle = composePlayBundle({
   identity: { id: 'asha.d20-fantasy.starter-play', version: '1.0.0' },
@@ -28,4 +28,3 @@ export function prepareD20FantasyStarterPlayBundle() {
     contentPacks: [d20FantasyStarterContentSource],
   });
 }
-

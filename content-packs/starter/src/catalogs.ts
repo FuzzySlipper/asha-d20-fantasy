@@ -4,7 +4,7 @@ const packageId = 'asha.d20-fantasy.starter';
 
 export const starterCatalogs = defineContentCatalog({
   packageId,
-  sourceModule: 'rulesets/d20-fantasy/content-packs/starter/src/catalogs.ts',
+  sourceModule: 'content-packs/starter/src/catalogs.ts',
   entries: {
     slashing: {
       definitionId: 'slashing',

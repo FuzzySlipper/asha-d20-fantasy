@@ -1,15 +1,19 @@
 # ASHA d20 fantasy rules
 
-This public repository is an independent consumer of ASHA RPG. It contains one
-complete ruleset root:
+This public repository is an independent consumer of ASHA RPG. Its authored
+concepts are peer roots rather than one aggregate Ruleset directory:
 
 ```text
 rulesets/d20-fantasy/
   src/ruleset.ts
-  content-packs/starter/src/
-  play-bundles/starter.ts
-  scenarios/starter-skirmish.ts
-  SOURCES.md
+content-packs/starter/
+  src/
+play-bundles/
+  starter.ts
+scenarios/
+  starter-skirmish.ts
+src/index.ts                    # repository package facade
+SOURCES.md
 ```
 
 The Ruleset declares semantic contracts and Rust bindings but no spells,
@@ -27,5 +31,4 @@ npm run --silent emit:prepared > /tmp/d20-fantasy-prepared.json
 npm run play:smoke
 ```
 
-Source and licensing details are in
-[`rulesets/d20-fantasy/SOURCES.md`](rulesets/d20-fantasy/SOURCES.md).
+Source and licensing details are in [`SOURCES.md`](SOURCES.md).
