@@ -62,6 +62,7 @@ export const shortSwordItem = itemDefinition(
 export const fighterProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'player',
   definitionReferences: references([
+    'action.move',
     'action.fighter.long-sword',
     'action.fighter.shield-bash',
     'action.fighter.second-wind',
@@ -84,6 +85,7 @@ export const fighterProfileData: ContentParticipantProfileData = defineParticipa
 export const wizardProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'player',
   definitionReferences: references([
+    'action.move',
     'action.wizard.fire-bolt',
     'action.wizard.thunder-wave',
     arcaneFocusItem.id,
@@ -103,7 +105,11 @@ export const wizardProfileData: ContentParticipantProfileData = defineParticipan
 
 export const goblinProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'creature',
-  definitionReferences: references(['action.goblin.scimitar', scimitarItem.id]),
+  definitionReferences: references([
+    'action.move',
+    'action.goblin.scimitar',
+    scimitarItem.id,
+  ]),
   capabilities: Object.freeze([
     participantProfileVitality({ current: 10, max: 10 }),
     ...abilities([8, 15, 10, 10, 8, 8]),
@@ -115,7 +121,11 @@ export const goblinProfileData: ContentParticipantProfileData = defineParticipan
 
 export const skeletonProfileData: ContentParticipantProfileData = defineParticipantProfileData({
   role: 'creature',
-  definitionReferences: references(['action.skeleton.short-sword', shortSwordItem.id]),
+  definitionReferences: references([
+    'action.move',
+    'action.skeleton.short-sword',
+    shortSwordItem.id,
+  ]),
   capabilities: Object.freeze([
     participantProfileVitality({ current: 13, max: 13 }),
     ...abilities([10, 16, 15, 6, 8, 5]),

@@ -39,13 +39,24 @@ fn main() {
     assert_eq!(skeleton.stat("dexterity-modifier"), Some(3));
     assert_eq!(skeleton.stat("initiative"), Some(3));
 
+    let movement = session
+        .encounter_view()
+        .actions
+        .into_iter()
+        .find(|action| action.definition_id == "action.move")
+        .expect("current actor owns Move");
+    assert!(movement.options.cell_ids.contains(&"cell-2-4".to_owned()));
     accept(action(
         &mut session,
         &mut random,
-        "action.skeleton.short-sword",
+        "action.move",
         "skeleton",
-        &["wizard"],
+        &["cell-2-4"],
     ));
+    assert_eq!(
+        session.state().entity("skeleton").unwrap().position(),
+        asha_rpg::GridPosition { x: 2, y: 4 }
+    );
 
     let pending = action(
         &mut session,

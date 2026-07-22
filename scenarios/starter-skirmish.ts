@@ -118,7 +118,7 @@ function scenarioTemplate(
     identity: { id, version: '1.0.0' },
     playBundle: d20FantasyStarterPlayBundle.identity,
     presentation: { label, description },
-    board: { width, height, cells: [] },
+    board: { width, height, cells: boardCells(width, height) },
     participants,
     turn: {
       initiativeOrder,
@@ -132,6 +132,18 @@ function scenarioTemplate(
       sourceId: 'random.system',
       sourceVersion: 1,
     },
+  });
+}
+
+function boardCells(width: number, height: number) {
+  return Array.from({ length: width * height }, (_unused, index) => {
+    const x = index % width;
+    const y = Math.floor(index / width);
+    return {
+      id: `cell-${x}-${y}`,
+      position: { x, y },
+      capabilities: [],
+    };
   });
 }
 

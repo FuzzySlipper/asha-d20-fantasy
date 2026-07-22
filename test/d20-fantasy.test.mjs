@@ -62,6 +62,12 @@ test('named d20 contracts and starter content prepare as one PlayBundle', () => 
   }
   assert.ok(result.prepared.derivationProvenance.length >= 2);
   assert.ok(result.prepared.materializedDefinitions.some(
+    (definition) =>
+      definition.id === 'action.move' &&
+      definition.semantic.targets.kind === 'cell' &&
+      definition.semantic.program.body.noRoll.operation.kind === 'moveToCell',
+  ));
+  assert.ok(result.prepared.materializedDefinitions.some(
     (definition) => definition.semantic.catalog === 'modifier' && definition.semantic.id === 'prone',
   ));
 });
@@ -90,6 +96,11 @@ test('Rust compiles and reloads the real starter artifact', () => {
 
   const scenario = starterSkirmishScenario(envelope.artifact.artifactId);
   assert.equal(scenario.participants.length, 4);
+  assert.equal(scenario.board.cells.length, 35);
+  assert.equal(new Set(scenario.board.cells.map((cell) => cell.id)).size, 35);
+  assert.ok(scenario.participants.every((participant) =>
+    participant.definitionIds.includes('action.move')
+  ));
   assert.deepEqual(scenario.turn.initiativeOrder, ['skeleton', 'fighter', 'wizard', 'goblin']);
 });
 

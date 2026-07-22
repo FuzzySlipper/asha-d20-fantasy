@@ -6,6 +6,7 @@ import {
   ally,
   applyModifier,
   attack,
+  cells,
   combineContentPatches,
   constant,
   damage,
@@ -18,6 +19,7 @@ import {
   half,
   heal,
   hostile,
+  moveToCell,
   noRoll,
   onCheck,
   openReaction,
@@ -39,6 +41,23 @@ import { starterCatalogs } from './catalogs.js';
 const sourceModule = 'content-packs/starter/src/actions.ts';
 const defensiveGuard = reactionId('reaction.defensive-guard');
 const brace = reactionOptionId('brace');
+
+export const basicMove = publicAction(
+  'action.move',
+  'Move',
+  action({
+    id: actionId('action.move'),
+    name: 'Move',
+    sourcePath: `${sourceModule}#basicMove`,
+    targets: cells({ range: 6 }),
+    check: noRoll(),
+    program: onCheck({
+      noRoll: moveToCell({ maximumDistance: 6, provokes: true }),
+    }),
+  }),
+  'Move to an authority-approved destination within six grid cells. Movement consumes this turn.',
+  ['movement'],
+);
 
 export const meleePresentationMixin = defineMixinDefinition({
   id: 'mixin.melee-presentation',
@@ -282,6 +301,7 @@ export const skeletonShortSword = publicAction(
 );
 
 export const starterActionDefinitions = Object.freeze([
+  basicMove,
   longSwordBase,
   lightBladeBase,
   meleePresentationMixin,
