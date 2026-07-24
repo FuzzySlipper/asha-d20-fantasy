@@ -1,11 +1,14 @@
 import {
+  contentPackDependency,
   contentPackSource,
   defineContentPack,
 } from '@asha-rpg/authoring';
 
 import {
+  d20FantasyFoundationContentPack,
+} from '../../foundation/src/content-pack.js';
+import {
   starterActionDefinitions,
-  starterActionRelationships,
 } from './actions.js';
 import { starterCatalogs } from './catalogs.js';
 import {
@@ -19,13 +22,19 @@ export const d20FantasyStarterContentPack = defineContentPack({
     module: 'content-packs/starter/src/content-pack.ts',
     declaration: 'd20FantasyStarterContentPack',
   },
+  dependencies: [
+    contentPackDependency({
+      id: d20FantasyFoundationContentPack.identity.id,
+      version: d20FantasyFoundationContentPack.identity.version,
+      importAs: 'foundation',
+    }),
+  ],
   definitions: [
     ...starterCatalogs.definitions,
     ...starterActionDefinitions,
     ...starterItemDefinitions,
     ...starterProfileDefinitions,
   ],
-  relationships: starterActionRelationships,
 });
 
 export const d20FantasyStarterContentSource = contentPackSource(

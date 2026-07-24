@@ -1,9 +1,9 @@
 use std::io::{self, Read};
 
 use asha_rpg::{
-    compile_prepared_play_bundle_json, RpgActionProposal, RpgAuthoritySession, RpgCommandOutcome,
-    RpgRandomRequest, RpgRandomSource, RpgRandomSourceBinding, RpgRandomSourceFailure,
-    RpgReactionProposal, RpgScenario,
+    compile_prepared_play_bundle_json, CompiledPlayBundle, RpgActionProposal, RpgAuthoritySession,
+    RpgCommandOutcome, RpgRandomRequest, RpgRandomSource, RpgRandomSourceBinding,
+    RpgRandomSourceFailure, RpgReactionProposal, RpgScenario,
 };
 use serde::Deserialize;
 use serde_json::Value;
@@ -13,6 +13,8 @@ use serde_json::Value;
 struct SessionSource {
     prepared: Value,
     scenario: Value,
+    #[serde(default = "default_brace_reduction")]
+    expected_brace_reduction: u32,
 }
 
 fn main() {
@@ -27,6 +29,7 @@ fn main() {
     let mut scenario_value = source.scenario;
     scenario_value["playBundleId"] = Value::String(bundle.artifact().artifact_id.clone());
     let scenario: RpgScenario = serde_json::from_value(scenario_value).expect("decode Scenario");
+    assert_shared_weapon_behavior(&bundle, &scenario, source.expected_brace_reduction);
     let mut random = StableSource {
         binding: scenario.random_source.clone(),
     };
@@ -61,6 +64,7 @@ fn main() {
         &mut random,
         "action.move",
         "skeleton",
+        None,
         &["cell-4-3"],
     ));
     assert_eq!(
@@ -71,8 +75,9 @@ fn main() {
     let pending = action(
         &mut session,
         &mut random,
-        "action.fighter.long-sword",
+        "action.basic-attack",
         "fighter",
+        Some("item.long-sword"),
         &["goblin"],
     );
     let RpgCommandOutcome::AwaitingReaction(pending) = pending else {
@@ -95,15 +100,31 @@ fn main() {
         &mut random,
         "action.wizard.fire-bolt",
         "wizard",
+        None,
         &["skeleton"],
     ));
-    accept(action(
+    let pending = action(
         &mut session,
         &mut random,
-        "action.goblin.scimitar",
+        "action.basic-attack",
         "goblin",
+        Some("item.scimitar"),
         &["fighter"],
-    ));
+    );
+    let RpgCommandOutcome::AwaitingReaction(pending) = pending else {
+        panic!("goblin Basic Attack must expose the shared defensive reaction");
+    };
+    let (reaction, _) = session
+        .react_with_random_source_recorded(
+            RpgReactionProposal {
+                expected_revision: pending.expected_revision,
+                reaction_id: pending.request.reaction_id,
+                option_id: None,
+            },
+            &mut random,
+        )
+        .expect("decline goblin defensive reaction");
+    accept(reaction);
 
     assert_eq!(session.turn().round, 2);
     assert_eq!(session.turn().current_actor_id, "skeleton");
@@ -118,13 +139,72 @@ fn main() {
     );
 }
 
+fn assert_shared_weapon_behavior(
+    bundle: &CompiledPlayBundle,
+    scenario: &RpgScenario,
+    expected_brace_reduction: u32,
+) {
+    for (actor_id, item_definition_id, target_id) in [
+        ("fighter", "item.battleaxe", "goblin"),
+        ("fighter", "item.long-sword", "goblin"),
+        ("goblin", "item.scimitar", "fighter"),
+        ("skeleton", "item.short-sword", "wizard"),
+    ] {
+        let mut probe_scenario = scenario.clone();
+        probe_scenario.turn.current_actor_id = actor_id.to_owned();
+        let mut random = StableSource {
+            binding: probe_scenario.random_source.clone(),
+        };
+        let mut probe = RpgAuthoritySession::from_scenario(bundle.clone(), probe_scenario)
+            .expect("start bound-action probe");
+        let outcome = action(
+            &mut probe,
+            &mut random,
+            "action.basic-attack",
+            actor_id,
+            Some(item_definition_id),
+            &[target_id],
+        );
+        let RpgCommandOutcome::AwaitingReaction(pending) = outcome else {
+            panic!("{actor_id} {item_definition_id} must reach the shared defensive reaction");
+        };
+        assert_eq!(
+            pending.request.options[0].damage_reduction, expected_brace_reduction,
+            "{item_definition_id} must inherit the one Basic Attack behavior"
+        );
+    }
+}
+
+fn default_brace_reduction() -> u32 {
+    2
+}
+
 fn action(
     session: &mut RpgAuthoritySession,
     random: &mut StableSource,
     action_id: &str,
     actor_id: &str,
+    item_definition_id: Option<&str>,
     target_ids: &[&str],
 ) -> RpgCommandOutcome {
+    let item_binding = session
+        .encounter_view()
+        .actions
+        .into_iter()
+        .find(|action| {
+            action.definition_id == action_id
+                && action
+                    .item_binding
+                    .as_ref()
+                    .map(|binding| binding.item_definition_id.as_str())
+                    == item_definition_id
+        })
+        .unwrap_or_else(|| {
+            panic!(
+                "current actor {actor_id} must expose {action_id} with binding {item_definition_id:?}"
+            )
+        })
+        .item_binding;
     let expected_revision = session.state().revision();
     let (outcome, _) = session
         .submit_with_random_source_recorded(
@@ -133,6 +213,7 @@ fn action(
                 action_id: action_id.to_owned(),
                 actor_id: actor_id.to_owned(),
                 target_ids: target_ids.iter().map(|value| (*value).to_owned()).collect(),
+                item_binding,
             },
             random,
         )

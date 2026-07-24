@@ -30,6 +30,12 @@ export const starterCatalogs = defineContentCatalog({
       id: 'fire',
       label: 'Fire',
     },
+    cold: {
+      definitionId: 'cold',
+      category: 'damageType',
+      id: 'cold',
+      label: 'Cold',
+    },
     thunder: {
       definitionId: 'thunder',
       category: 'damageType',

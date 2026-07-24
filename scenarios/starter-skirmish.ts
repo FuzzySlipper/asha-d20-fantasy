@@ -190,6 +190,11 @@ function participant(
       profileDefinitionId,
       ...profile.definitionReferences.map((reference) => reference.definitionId),
     ],
+    items: profile.items.map((item) => ({
+      id: item.id,
+      definitionId: item.definition.definitionId,
+    })),
+    equipment: profile.equipment,
     capabilities: profile.capabilities,
   };
 }

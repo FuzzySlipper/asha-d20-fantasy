@@ -8,6 +8,7 @@
   "exports": {
     ".": "./dist/src/index.js",
     "./rulesets/d20-fantasy": "./dist/rulesets/d20-fantasy/src/index.js",
+    "./content-packs/foundation": "./dist/content-packs/foundation/src/index.js",
     "./content-packs/starter": "./dist/content-packs/starter/src/index.js",
     "./play-bundles/starter": "./dist/play-bundles/starter.js",
     "./scenarios/starter-skirmish": "./dist/scenarios/starter-skirmish.js"
