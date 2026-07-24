@@ -99,9 +99,63 @@ export const starterSkirmishScenarioTemplate = scenarioTemplate(
   [{ x: 3, y: 3 }],
 );
 
+export const positionalTalentsScenarioTemplate = scenarioTemplate(
+  'asha.d20-fantasy.scenario.positional-talents',
+  'Positional Talents',
+  'A Fighter begins between two hostiles while a Wizard completes a flank across the Goblin.',
+  5,
+  4,
+  [
+    participant(
+      'fighter',
+      'Fighter',
+      'heroes',
+      1,
+      1,
+      fighterProfile.id,
+      fighterProfileData,
+    ),
+    participant(
+      'wizard',
+      'Wizard',
+      'heroes',
+      3,
+      1,
+      wizardProfile.id,
+      wizardProfileData,
+    ),
+    participant(
+      'goblin',
+      'Goblin Warrior',
+      'monsters',
+      2,
+      1,
+      goblinProfile.id,
+      goblinProfileData,
+    ),
+    participant(
+      'skeleton',
+      'Skeleton',
+      'monsters',
+      1,
+      2,
+      skeletonProfile.id,
+      skeletonProfileData,
+    ),
+  ],
+  ['fighter', 'wizard', 'goblin', 'skeleton'],
+);
+
 export function starterSkirmishScenario(playBundleId: string): Scenario {
   return instantiateScenarioTemplate(
     starterSkirmishScenarioTemplate,
+    playBundleId,
+  );
+}
+
+export function positionalTalentsScenario(playBundleId: string): Scenario {
+  return instantiateScenarioTemplate(
+    positionalTalentsScenarioTemplate,
     playBundleId,
   );
 }
@@ -190,6 +244,16 @@ function participant(
       profileDefinitionId,
       ...profile.definitionReferences.map((reference) => reference.definitionId),
     ],
+    ...(profile.classDefinition === null
+      ? {}
+      : { classDefinitionId: profile.classDefinition.definitionId }),
+    ...(profile.featureDefinitions.length === 0
+      ? {}
+      : {
+          featureDefinitionIds: profile.featureDefinitions.map(
+            (reference) => reference.definitionId,
+          ),
+        }),
     items: profile.items.map((item) => ({
       id: item.id,
       definitionId: item.definition.definitionId,

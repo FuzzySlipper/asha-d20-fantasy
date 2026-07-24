@@ -23,6 +23,13 @@ import type {
 
 import { d20FantasyValues } from '../../../rulesets/d20-fantasy/src/ruleset.js';
 import { starterCatalogs } from './catalogs.js';
+import {
+  arcaneComposureTalent,
+  coordinatedFlankerTalent,
+  fighterClass,
+  holdTheLineTalent,
+  wizardClass,
+} from './classes.js';
 
 const sourceModule = 'content-packs/starter/src/profiles.ts';
 const weaponSlots = ['hand.main', 'hand.off', 'weapon.backup'] as const;
@@ -124,6 +131,13 @@ export const arcaneFocusItem = defineItemDefinition({
 export const fighterProfileData: ContentParticipantProfileData =
   defineParticipantProfileData({
     role: 'player',
+    classDefinition: definitionReference({
+      definitionId: fighterClass.id,
+    }),
+    featureDefinitions: [
+      definitionReference({ definitionId: coordinatedFlankerTalent.id }),
+      definitionReference({ definitionId: holdTheLineTalent.id }),
+    ],
     definitionReferences: references([
       'action.move',
       'action.basic-attack',
@@ -164,6 +178,12 @@ export const fighterProfileData: ContentParticipantProfileData =
 export const wizardProfileData: ContentParticipantProfileData =
   defineParticipantProfileData({
     role: 'player',
+    classDefinition: definitionReference({
+      definitionId: wizardClass.id,
+    }),
+    featureDefinitions: [
+      definitionReference({ definitionId: arcaneComposureTalent.id }),
+    ],
     definitionReferences: references([
       'action.move',
       'action.wizard.fire-bolt',

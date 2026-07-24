@@ -5,6 +5,8 @@ import { test } from 'node:test';
 import {
   canonicalJson,
   contentPackSource,
+  defineCharacterClassDefinition,
+  defineCharacterFeatureDefinition,
   defineContentPack,
   defineRuleset,
   preparePlayBundle,
@@ -19,8 +21,13 @@ import {
   d20FantasyStarterContentSource,
   d20FantasyStarterPlayBundle,
   d20FantasyValues,
+  coordinatedFlankerTalent,
+  fighterClass,
+  holdTheLineTalent,
+  positionalTalentsScenario,
   prepareD20FantasyStarterPlayBundle,
   starterSkirmishScenario,
+  wizardClass,
 } from '../dist/src/index.js';
 
 test('the PlayBundle composes a procedure foundation and a dependent starter pack', () => {
@@ -114,11 +121,17 @@ test('starter weapons, shield, and focus are typed data-only items', () => {
 test('profiles carry authoritative item instances and equipment loadouts', () => {
   const result = preparedStarter();
   const fighter = materialized(result.prepared, 'profile.fighter').semantic.data;
+  const wizard = materialized(result.prepared, 'profile.wizard').semantic.data;
   assert.deepEqual(fighter.definitionIds, [
     'action.basic-attack',
     'action.fighter.second-wind',
     'action.fighter.shield-bash',
     'action.move',
+  ]);
+  assert.equal(fighter.classDefinitionId, fighterClass.id);
+  assert.deepEqual(fighter.featureDefinitionIds, [
+    coordinatedFlankerTalent.id,
+    holdTheLineTalent.id,
   ]);
   assert.deepEqual(fighter.items, [
     { id: 'fighter-battleaxe', definitionId: 'item.battleaxe' },
@@ -130,6 +143,10 @@ test('profiles carry authoritative item instances and equipment loadouts', () =>
     { slotId: 'hand.off', itemInstanceId: 'fighter-shield' },
     { slotId: 'weapon.backup', itemInstanceId: 'fighter-battleaxe' },
   ]);
+  assert.equal(wizard.classDefinitionId, wizardClass.id);
+  assert.deepEqual(wizard.featureDefinitionIds, [
+    'feature.arcane-composure',
+  ]);
 
   const scenario = starterSkirmishScenario('compiled-by-test');
   const scenarioFighter = scenario.participants.find(
@@ -140,6 +157,183 @@ test('profiles carry authoritative item instances and equipment loadouts', () =>
   assert.ok(scenario.participants.every((participant) =>
     participant.definitionIds.includes('action.move')
   ));
+});
+
+test('classes and talents are explicit materialized content and Scenario selections', () => {
+  const result = preparedStarter();
+  const classes = result.prepared.materializedDefinitions.filter(
+    (definition) => definition.kind === 'characterClass',
+  );
+  const features = result.prepared.materializedDefinitions.filter(
+    (definition) => definition.kind === 'characterFeature',
+  );
+  assert.deepEqual(
+    classes.map((definition) => definition.id).sort(),
+    [fighterClass.id, wizardClass.id],
+  );
+  assert.deepEqual(
+    features.map((definition) => definition.id).sort(),
+    [
+      'feature.arcane-composure',
+      coordinatedFlankerTalent.id,
+      holdTheLineTalent.id,
+    ],
+  );
+  assert.deepEqual(
+    materialized(result.prepared, fighterClass.id).semantic.featureDefinitionIds,
+    [coordinatedFlankerTalent.id, holdTheLineTalent.id],
+  );
+  assert.deepEqual(
+    materialized(result.prepared, coordinatedFlankerTalent.id)
+      .semantic.rollContributions,
+    [{
+      id: 'coordinated-flanker',
+      selector: 'attack',
+      condition: { kind: 'actorFlanksTarget' },
+      amount: 2,
+    }],
+  );
+  assert.deepEqual(
+    materialized(result.prepared, holdTheLineTalent.id)
+      .semantic.rollContributions,
+    [{
+      id: 'hold-the-line',
+      selector: 'attack',
+      condition: { kind: 'actorSurrounded', minimumHostiles: 2 },
+      amount: 1,
+    }],
+  );
+
+  const scenario = positionalTalentsScenario('compiled-by-test');
+  const fighter = scenario.participants.find(
+    (participant) => participant.id === 'fighter',
+  );
+  assert.equal(fighter.classDefinitionId, fighterClass.id);
+  assert.deepEqual(fighter.featureDefinitionIds, [
+    coordinatedFlankerTalent.id,
+    holdTheLineTalent.id,
+  ]);
+  assert.equal(scenario.turn.currentActorId, 'fighter');
+  assert.deepEqual(
+    scenario.participants.map(({ id, position }) => ({ id, position })),
+    [
+      { id: 'fighter', position: { x: 1, y: 1 } },
+      { id: 'wizard', position: { x: 3, y: 1 } },
+      { id: 'goblin', position: { x: 2, y: 1 } },
+      { id: 'skeleton', position: { x: 1, y: 2 } },
+    ],
+  );
+  assert.equal('commands' in scenario, false);
+  assert.equal('expectedEvents' in scenario, false);
+});
+
+test('talent semantics affect artifact identity and invalid class edges fail closed', () => {
+  const original = preparedStarter();
+  const changedTalent = defineCharacterFeatureDefinition({
+    ...coordinatedFlankerTalent,
+    characterFeature: {
+      rollContributions:
+        coordinatedFlankerTalent.characterFeature.rollContributions.map(
+          (contribution) => ({ ...contribution, amount: 3 }),
+        ),
+    },
+  });
+  const changedPack = defineContentPack({
+    ...d20FantasyStarterContentPack,
+    definitions: d20FantasyStarterContentPack.definitions.map(
+      (definition) => definition.id === changedTalent.id
+        ? changedTalent
+        : definition,
+    ),
+  });
+  const changed = preparePlayBundle({
+    bundle: d20FantasyStarterPlayBundle,
+    contentPacks: [
+      contentPackSource(changedPack),
+      d20FantasyFoundationContentSource,
+    ],
+  });
+  assert.equal(changed.ok, true, changed.ok ? undefined : canonicalJson(changed.diagnostics));
+  if (!changed.ok) return;
+  const originalArtifactId =
+    compileStarter(original.prepared).artifact.artifactId;
+  assert.notEqual(
+    originalArtifactId,
+    compileStarter(changed.prepared).artifact.artifactId,
+  );
+
+  const changedClass = defineCharacterClassDefinition({
+    ...wizardClass,
+    characterClass: {
+      featureDefinitions: [
+        ...wizardClass.characterClass.featureDefinitions,
+        { definitionId: coordinatedFlankerTalent.id },
+      ],
+    },
+  });
+  const changedClassPack = defineContentPack({
+    ...d20FantasyStarterContentPack,
+    definitions: d20FantasyStarterContentPack.definitions.map(
+      (definition) => definition.id === changedClass.id
+        ? changedClass
+        : definition,
+    ),
+  });
+  const changedClassResult = preparePlayBundle({
+    bundle: d20FantasyStarterPlayBundle,
+    contentPacks: [
+      contentPackSource(changedClassPack),
+      d20FantasyFoundationContentSource,
+    ],
+  });
+  assert.equal(
+    changedClassResult.ok,
+    true,
+    changedClassResult.ok
+      ? undefined
+      : canonicalJson(changedClassResult.diagnostics),
+  );
+  if (!changedClassResult.ok) return;
+  assert.notEqual(
+    originalArtifactId,
+    compileStarter(changedClassResult.prepared).artifact.artifactId,
+  );
+
+  for (const [referenceId, expectedCode] of [
+    ['feature.missing', 'CONTENT_PACK_DEFINITION_REFERENCE_MISSING'],
+    ['item.long-sword', 'CHARACTER_CLASS_FEATURE_REFERENCE_INVALID'],
+  ]) {
+    const invalidClass = defineCharacterClassDefinition({
+      ...fighterClass,
+      characterClass: {
+        featureDefinitions: [{ definitionId: referenceId }],
+      },
+    });
+    const invalidPack = defineContentPack({
+      ...d20FantasyStarterContentPack,
+      definitions: d20FantasyStarterContentPack.definitions.map(
+        (definition) => definition.id === invalidClass.id
+          ? invalidClass
+          : definition,
+      ),
+    });
+    const invalid = preparePlayBundle({
+      bundle: d20FantasyStarterPlayBundle,
+      contentPacks: [
+        contentPackSource(invalidPack),
+        d20FantasyFoundationContentSource,
+      ],
+    });
+    assert.equal(invalid.ok, false);
+    if (!invalid.ok) {
+      assert.ok(
+        invalid.diagnostics.some(
+          (diagnostic) => diagnostic.code === expectedCode,
+        ),
+        canonicalJson(invalid.diagnostics),
+      );
+    }
+  }
 });
 
 test('Rust expands one Basic Attack into weapon-specific authoritative variants', () => {
@@ -388,6 +582,7 @@ function playConsumer(prepared, extra = {}) {
       encoding: 'utf8',
       input: canonicalJson({
         prepared,
+        positionalScenario: positionalTalentsScenario('compiled-by-consumer'),
         scenario: starterSkirmishScenario('compiled-by-consumer'),
         ...extra,
       }),

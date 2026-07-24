@@ -1,6 +1,7 @@
 import { canonicalJson } from '@asha-rpg/authoring';
 
 import {
+  positionalTalentsScenario,
   prepareD20FantasyStarterPlayBundle,
   starterSkirmishScenario,
 } from '../dist/src/index.js';
@@ -12,5 +13,6 @@ if (!result.ok) {
 
 process.stdout.write(canonicalJson({
   prepared: result.prepared,
+  positionalScenario: positionalTalentsScenario('compiled-by-consumer'),
   scenario: starterSkirmishScenario('compiled-by-consumer'),
 }));

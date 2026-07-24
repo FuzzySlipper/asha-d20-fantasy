@@ -26,3 +26,10 @@ https://creativecommons.org/licenses/by/4.0/legalcode.
 
 The source document used for verification is the official SRD 5.2.1 PDF:
 https://media.dndbeyond.com/compendium-images/srd/5.2/SRD_CC_v5.2.1.pdf
+
+The Fighter and Wizard class names are attributable to that SRD source. The
+Coordinated Flanker, Hold the Line, and Arcane Composure talent names,
+descriptions, exact grid conditions, and numeric bonuses are original starter
+content authored for this repository's ASHA RPG positional-resolution example;
+they are released under this repository's CC BY 4.0 license and are not copied
+from the SRD.

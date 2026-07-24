@@ -30,6 +30,13 @@ programs. Profiles create item instances and equip them into named slots. Rust
 materializes the shared `action.basic-attack` once per compatible weapon and
 requires proposals to identify the exact equipped item binding.
 
+The starter pack also publishes sealed Fighter and Wizard class definitions
+plus data-only positional talents. Profiles explicitly select their class and
+talents. The `Positional Talents` Scenario begins with the Fighter flanking one
+hostile while adjacent to two, allowing Rust to explain the Basic Attack's
+base modifier, flanking bonus, and surrounded bonus as separate structured
+contributions. TypeScript does not evaluate those board conditions.
+
 The engine is pinned as the `vendor/asha-rpg` submodule. Clone recursively, then
 run:
 

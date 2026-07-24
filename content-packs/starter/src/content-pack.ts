@@ -12,6 +12,10 @@ import {
 } from './actions.js';
 import { starterCatalogs } from './catalogs.js';
 import {
+  starterCharacterClassDefinitions,
+  starterCharacterFeatureDefinitions,
+} from './classes.js';
+import {
   starterItemDefinitions,
   starterProfileDefinitions,
 } from './profiles.js';
@@ -32,6 +36,8 @@ export const d20FantasyStarterContentPack = defineContentPack({
   definitions: [
     ...starterCatalogs.definitions,
     ...starterActionDefinitions,
+    ...starterCharacterFeatureDefinitions,
+    ...starterCharacterClassDefinitions,
     ...starterItemDefinitions,
     ...starterProfileDefinitions,
   ],
