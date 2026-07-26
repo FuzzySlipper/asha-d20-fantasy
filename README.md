@@ -10,6 +10,8 @@ rulesets/tactical-rollover/
   src/ruleset.ts
 rulesets/context-tactics/
   src/ruleset.ts
+rulesets/multi-axis-pool/
+  src/ruleset.ts
 content-packs/foundation/
   src/procedures.ts
 content-packs/starter/
@@ -18,14 +20,18 @@ content-packs/tactical-rollover/
   src/
 content-packs/context-tactics/
   src/
+content-packs/multi-axis-pool/
+  src/
 play-bundles/
   starter.ts
   tactical-rollover.ts
   context-tactics.ts
+  multi-axis-pool.ts
 scenarios/
   starter-skirmish.ts
   tactical-rollover-skirmish.ts
   context-tactics-crossing.ts
+  multi-axis-pool-crossing.ts
 src/index.ts                    # repository package facade
 SOURCES.md
 ```
@@ -66,6 +72,16 @@ per-part responses, and bounded area selection. Its Rust witness records actor,
 target, item, and cell facts as applied, inapplicable, or suppressed authority
 decisions and proves budget reset, effect expiry, atomic rejection, and replay.
 
+The Multi-Axis Pool kit is a third distinct clean-room Ruleset. It defines
+original signal, focus, and drag dice with explicit face vectors, paired-axis
+cancellation, an uncoupled axis, and one primary outcome band independent from
+benefit and complication results. Its Rust witness reduces actor, exact bound
+item, and active-effect sources in canonical order; proves both replacement and
+fallback from the same item rule; records applied and inapplicable decisions;
+spends one fixed resource while preserving a second; rejects mismatched typed
+random evidence atomically; expires the short effect exactly; and replays to
+the same authority hash and log.
+
 The engine is pinned as the `vendor/asha-rpg` submodule. Clone recursively, then
 run:
 
@@ -76,6 +92,7 @@ npm run --silent emit:prepared > /tmp/d20-fantasy-prepared.json
 npm run play:smoke
 npm run play:tactical-rollover
 npm run play:context-tactics
+npm run play:multi-axis-pool
 ```
 
 Source and licensing details are in [`SOURCES.md`](SOURCES.md).

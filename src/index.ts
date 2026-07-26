@@ -11,3 +11,7 @@ export * from '../rulesets/context-tactics/src/index.js';
 export * from '../content-packs/context-tactics/src/index.js';
 export * from '../play-bundles/context-tactics.js';
 export * from '../scenarios/context-tactics-crossing.js';
+export * from '../rulesets/multi-axis-pool/src/index.js';
+export * from '../content-packs/multi-axis-pool/src/index.js';
+export * from '../play-bundles/multi-axis-pool.js';
+export * from '../scenarios/multi-axis-pool-crossing.js';

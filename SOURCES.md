@@ -83,3 +83,29 @@ The kit is pinned to ASHA RPG revision
 trees, persistent-damage timing, arbitrary roll options, general schedulers or
 reaction authoring, cones, elevation, cover, source-system critical rules, or
 source-system content compatibility.
+
+## Multi-Axis Pool clean-room kit
+
+The Multi-Axis Pool Ruleset, Content Pack, PlayBundle, Scenario, die names,
+face vectors, axes, cancellation pairs, distributions, source definitions,
+identifiers, values, and encounter are original content authored for this
+repository. They are not adapted from the SRD or a surveyed content catalog
+and do not claim compatibility with a source game or Foundry VTT.
+
+The mechanical scope was selected from the sanitized K2 brief in ASHA RPG's
+`docs/first-wave-primitive-catalog.md`, produced by Den task `#6179`. The
+architecture study used bounded implementation evidence from the
+`StarWarsFoundryVTT/StarWarsFFG` repository's `main` ref at
+`f989bf4fa8590ef83dd55d09bf0d15bf59690d18`. The survey tool revision was
+`rpg-primitive-survey@4fc9d28c7fe35d0d9e5a6010b886d72f13852d3e`.
+Those handles are mechanical provenance only. No source records, text, names,
+icons, proprietary dice symbols, catalogs, package structure, character data,
+or adventure content were copied or converted.
+
+The kit is pinned to ASHA RPG revision
+`64a7c08815fa9856a1a8e95c767eca5096d74d9f`. It claims only the checked-in
+Rust-authoritative heterogeneous-pool witness. It does not claim initiative
+derived from a pool, specialized pool user interface, probability analysis,
+opposed pools, rerolls, upgrades outside the explicit replacement rule,
+critical-result tables, equipment inventory workflows, source-system content,
+or source-system compatibility.
