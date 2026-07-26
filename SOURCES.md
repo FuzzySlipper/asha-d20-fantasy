@@ -33,3 +33,29 @@ descriptions, exact grid conditions, and numeric bonuses are original starter
 content authored for this repository's ASHA RPG positional-resolution example;
 they are released under this repository's CC BY 4.0 license and are not copied
 from the SRD.
+
+## Tactical Rollover clean-room kit
+
+The Tactical Rollover Ruleset, Content Pack, PlayBundle, Scenario, names,
+descriptions, identifiers, values, and worked encounter are original content
+authored for this repository. They are not adapted from the SRD and do not
+claim compatibility with D&D, Pathfinder, Foundry VTT, or any surveyed game
+system.
+
+The mechanical scope was selected from the sanitized K0 brief in ASHA RPG's
+`docs/first-wave-primitive-catalog.md`, produced by Den task `#6179`. That
+catalog used bounded architecture evidence from the `foundryvtt/dnd5e`
+repository's `6.0.x` ref at
+`65ee4f748f1d6d8d8cc00f2f7a81e67426927d5a`. The survey tool revision was
+`rpg-primitive-survey@4fc9d28c7fe35d0d9e5a6010b886d72f13852d3e`.
+Those handles are provenance for the mechanical study only. No source records,
+text, names, catalogs, package structures, or stat blocks were copied or
+converted.
+
+The kit is pinned to ASHA RPG revision
+`64a7c08815fa9856a1a8e95c767eca5096d74d9f`. It claims only the bounded
+mechanical witness exercised by its checked-in tests and Rust consumer. It
+does not claim rest recovery, summons, runtime progression, broad reaction
+authoring, temporary vitality, inventory economy, line of effect, cover,
+arbitrary templates, source-system critical damage rules, or source-system
+content compatibility.

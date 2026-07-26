@@ -40,7 +40,7 @@ export const longSwordItem = weapon({
   description: 'A versatile one-handed martial weapon.',
   damage: { count: 1, sides: 8 },
   damageType: starterCatalogs.references.slashing,
-  damageStat: d20FantasyValues.StrengthModifier,
+  damageStat: d20FantasyValues.WeaponDamageBonus,
   kind: 'longsword',
 });
 
@@ -50,7 +50,7 @@ export const battleAxeItem = weapon({
   description: 'A one-handed martial axe added entirely through item data and loadout.',
   damage: { count: 1, sides: 8 },
   damageType: starterCatalogs.references.slashing,
-  damageStat: d20FantasyValues.StrengthModifier,
+  damageStat: d20FantasyValues.WeaponDamageBonus,
   kind: 'battleaxe',
 });
 
@@ -60,7 +60,7 @@ export const scimitarItem = weapon({
   description: 'A light slashing weapon.',
   damage: { count: 1, sides: 6 },
   damageType: starterCatalogs.references.slashing,
-  damageStat: d20FantasyValues.DexterityModifier,
+  damageStat: d20FantasyValues.WeaponDamageBonus,
   kind: 'scimitar',
 });
 
@@ -70,7 +70,7 @@ export const shortSwordItem = weapon({
   description: 'A light piercing weapon.',
   damage: { count: 1, sides: 6 },
   damageType: starterCatalogs.references.piercing,
-  damageStat: d20FantasyValues.DexterityModifier,
+  damageStat: d20FantasyValues.WeaponDamageBonus,
   kind: 'shortsword',
 });
 
@@ -92,7 +92,7 @@ export const shieldItem = defineItemDefinition({
       itemDiceAttribute({ id: 'damage', count: 1, sides: 4 }),
       itemRulesetValueReferenceAttribute(
         'damage-stat',
-        d20FantasyValues.StrengthModifier,
+        d20FantasyValues.WeaponDamageBonus,
       ),
       itemCatalogReferenceAttribute(
         'damage-type',
@@ -159,6 +159,7 @@ export const fighterProfileData: ContentParticipantProfileData =
       ...abilities([16, 14, 14, 10, 12, 10]),
       participantProfileStat(d20FantasyValues.MeleeAttackBonus, 5),
       participantProfileStat(d20FantasyValues.SpellAttackBonus, 0),
+      participantProfileStat(d20FantasyValues.WeaponDamageBonus, 3),
       ...defenses({
         armorClass: 16,
         strength: 5,
@@ -199,6 +200,7 @@ export const wizardProfileData: ContentParticipantProfileData =
       ...abilities([8, 14, 14, 16, 12, 10]),
       participantProfileStat(d20FantasyValues.MeleeAttackBonus, 1),
       participantProfileStat(d20FantasyValues.SpellAttackBonus, 5),
+      participantProfileStat(d20FantasyValues.WeaponDamageBonus, 0),
       ...defenses({
         armorClass: 12,
         strength: -1,
@@ -231,6 +233,7 @@ export const goblinProfileData: ContentParticipantProfileData =
       ...abilities([8, 15, 10, 10, 8, 8]),
       participantProfileStat(d20FantasyValues.MeleeAttackBonus, 4),
       participantProfileStat(d20FantasyValues.SpellAttackBonus, 0),
+      participantProfileStat(d20FantasyValues.WeaponDamageBonus, 2),
       ...defenses({
         armorClass: 15,
         strength: -1,
@@ -259,6 +262,7 @@ export const skeletonProfileData: ContentParticipantProfileData =
       ...abilities([10, 16, 15, 6, 8, 5]),
       participantProfileStat(d20FantasyValues.MeleeAttackBonus, 5),
       participantProfileStat(d20FantasyValues.SpellAttackBonus, 0),
+      participantProfileStat(d20FantasyValues.WeaponDamageBonus, 3),
       ...defenses({
         armorClass: 14,
         strength: 0,

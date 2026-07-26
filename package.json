@@ -10,15 +10,20 @@
     "./rulesets/d20-fantasy": "./dist/rulesets/d20-fantasy/src/index.js",
     "./content-packs/foundation": "./dist/content-packs/foundation/src/index.js",
     "./content-packs/starter": "./dist/content-packs/starter/src/index.js",
+    "./rulesets/tactical-rollover": "./dist/rulesets/tactical-rollover/src/index.js",
+    "./content-packs/tactical-rollover": "./dist/content-packs/tactical-rollover/src/index.js",
     "./play-bundles/starter": "./dist/play-bundles/starter.js",
-    "./scenarios/starter-skirmish": "./dist/scenarios/starter-skirmish.js"
+    "./play-bundles/tactical-rollover": "./dist/play-bundles/tactical-rollover.js",
+    "./scenarios/starter-skirmish": "./dist/scenarios/starter-skirmish.js",
+    "./scenarios/tactical-rollover-skirmish": "./dist/scenarios/tactical-rollover-skirmish.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check:types": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test test/*.test.mjs",
     "emit:prepared": "npm run --silent build && node scripts/emit-prepared.mjs",
-    "play:smoke": "npm run build && node scripts/emit-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml"
+    "play:smoke": "npm run build && node scripts/emit-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml",
+    "play:tactical-rollover": "npm run build && node scripts/emit-tactical-rollover-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin tactical_rollover"
   },
   "dependencies": {
     "@asha-rpg/authoring": "file:vendor/asha-rpg/packages/authoring",

@@ -184,23 +184,49 @@ test('classes and talents are explicit materialized content and Scenario selecti
     [coordinatedFlankerTalent.id, holdTheLineTalent.id],
   );
   assert.deepEqual(
-    materialized(result.prepared, coordinatedFlankerTalent.id)
-      .semantic.rollContributions,
+    JSON.parse(JSON.stringify(
+      materialized(result.prepared, coordinatedFlankerTalent.id)
+        .semantic.contributions,
+    )),
     [{
+      schema: {
+        identity: 'asha.rpg.scalar-contribution',
+        version: 1,
+      },
       id: 'coordinated-flanker',
-      selector: 'attack',
-      condition: { kind: 'actorFlanksTarget' },
-      amount: 2,
+      selector: {
+        rulesetId: 'asha.d20-fantasy',
+        id: 'attack-total',
+      },
+      stackingGroup: {
+        rulesetId: 'asha.d20-fantasy',
+        id: 'circumstance',
+      },
+      value: { kind: 'constant', value: 2 },
+      predicate: { kind: 'actorFlanksTarget' },
     }],
   );
   assert.deepEqual(
-    materialized(result.prepared, holdTheLineTalent.id)
-      .semantic.rollContributions,
+    JSON.parse(JSON.stringify(
+      materialized(result.prepared, holdTheLineTalent.id)
+        .semantic.contributions,
+    )),
     [{
+      schema: {
+        identity: 'asha.rpg.scalar-contribution',
+        version: 1,
+      },
       id: 'hold-the-line',
-      selector: 'attack',
-      condition: { kind: 'actorSurrounded', minimumHostiles: 2 },
-      amount: 1,
+      selector: {
+        rulesetId: 'asha.d20-fantasy',
+        id: 'attack-total',
+      },
+      stackingGroup: {
+        rulesetId: 'asha.d20-fantasy',
+        id: 'circumstance',
+      },
+      value: { kind: 'constant', value: 1 },
+      predicate: { kind: 'actorSurrounded', minimumHostiles: 2 },
     }],
   );
 
@@ -232,9 +258,12 @@ test('talent semantics affect artifact identity and invalid class edges fail clo
   const changedTalent = defineCharacterFeatureDefinition({
     ...coordinatedFlankerTalent,
     characterFeature: {
-      rollContributions:
-        coordinatedFlankerTalent.characterFeature.rollContributions.map(
-          (contribution) => ({ ...contribution, amount: 3 }),
+      contributions:
+        coordinatedFlankerTalent.characterFeature.contributions.map(
+          (contribution) => ({
+            ...contribution,
+            value: { kind: 'constant', value: 3 },
+          }),
         ),
     },
   });
@@ -361,25 +390,25 @@ test('Rust expands one Basic Attack into weapon-specific authoritative variants'
         itemDefinitionId: 'item.battleaxe',
         damageDice: { count: 1, sides: 8 },
         damageType: 'slashing',
-        damageStat: 'strength-modifier',
+        damageStat: 'weapon-damage-bonus',
       },
       {
         itemDefinitionId: 'item.long-sword',
         damageDice: { count: 1, sides: 8 },
         damageType: 'slashing',
-        damageStat: 'strength-modifier',
+        damageStat: 'weapon-damage-bonus',
       },
       {
         itemDefinitionId: 'item.scimitar',
         damageDice: { count: 1, sides: 6 },
         damageType: 'slashing',
-        damageStat: 'dexterity-modifier',
+        damageStat: 'weapon-damage-bonus',
       },
       {
         itemDefinitionId: 'item.short-sword',
         damageDice: { count: 1, sides: 6 },
         damageType: 'piercing',
-        damageStat: 'dexterity-modifier',
+        damageStat: 'weapon-damage-bonus',
       },
     ],
   );

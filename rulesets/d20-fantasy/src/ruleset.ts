@@ -8,12 +8,16 @@ import {
   defineRuleset,
   floorDivideRulesetValues,
   readRulesetValue,
+  rulesetCalculationSelector,
+  rulesetContributionStackingGroup,
   rulesetDefense,
   rulesetStat,
   rulesetValueConstant,
   subtractRulesetValues,
 } from '@asha-rpg/authoring';
 import type {
+  RulesetCalculationSelectorReference,
+  RulesetContributionStackingGroupReference,
   RulesetValueReference,
   RulesetValueSource,
 } from '@asha-rpg/authoring';
@@ -36,6 +40,7 @@ export interface D20FantasyValueReferences {
   readonly CharismaModifier: D20StatReference;
   readonly MeleeAttackBonus: D20StatReference;
   readonly SpellAttackBonus: D20StatReference;
+  readonly WeaponDamageBonus: D20StatReference;
   readonly Initiative: D20StatReference;
   readonly ArmorClass: D20DefenseReference;
   readonly StrengthSave: D20DefenseReference;
@@ -81,6 +86,12 @@ const d20FantasyValueVocabulary = defineRuleset({
       signedStat('charisma-modifier', 'Charisma modifier'),
       signedStat('melee-attack-bonus', 'Melee attack bonus'),
       signedStat('spell-attack-bonus', 'Spell attack bonus'),
+      {
+        kind: 'stat',
+        id: 'weapon-damage-bonus',
+        label: 'Weapon damage bonus',
+        numericDomainId: 'damage-bonus',
+      },
       signedStat('initiative', 'Initiative'),
       defense('armor-class', 'Armor Class', 'armor-class'),
       defense('strength-save', 'Strength save'),
@@ -93,7 +104,24 @@ const d20FantasyValueVocabulary = defineRuleset({
     numericDomains: [
       { id: 'ability-score', minimum: 1, maximum: 30 },
       { id: 'armor-class', minimum: 0, maximum: 50 },
+      { id: 'damage-bonus', minimum: 0, maximum: 20 },
       { id: 'signed-bonus', minimum: -20, maximum: 30 },
+    ],
+    calculationSelectors: [
+      {
+        id: 'attack-total',
+        version: 1,
+        label: 'Attack total',
+        numericDomainId: 'signed-bonus',
+      },
+    ],
+    contributionStackingGroups: [
+      {
+        id: 'circumstance',
+        version: 1,
+        label: 'Circumstance',
+        policy: 'sum',
+      },
     ],
   },
 });
@@ -154,6 +182,7 @@ export const d20FantasyValues: D20FantasyValueReferences = Object.freeze({
   CharismaModifier: rulesetStat(d20FantasyRuleset, 'charisma-modifier'),
   MeleeAttackBonus: rulesetStat(d20FantasyRuleset, 'melee-attack-bonus'),
   SpellAttackBonus: rulesetStat(d20FantasyRuleset, 'spell-attack-bonus'),
+  WeaponDamageBonus: rulesetStat(d20FantasyRuleset, 'weapon-damage-bonus'),
   Initiative: rulesetStat(d20FantasyRuleset, 'initiative'),
   ArmorClass: rulesetDefense(d20FantasyRuleset, 'armor-class'),
   StrengthSave: rulesetDefense(d20FantasyRuleset, 'strength-save'),
@@ -162,6 +191,21 @@ export const d20FantasyValues: D20FantasyValueReferences = Object.freeze({
   IntelligenceSave: rulesetDefense(d20FantasyRuleset, 'intelligence-save'),
   WisdomSave: rulesetDefense(d20FantasyRuleset, 'wisdom-save'),
   CharismaSave: rulesetDefense(d20FantasyRuleset, 'charisma-save'),
+});
+
+export const d20FantasySelectors: Readonly<{
+  AttackTotal: RulesetCalculationSelectorReference<string, string>;
+}> = Object.freeze({
+  AttackTotal: rulesetCalculationSelector(d20FantasyRuleset, 'attack-total'),
+});
+
+export const d20FantasyStackingGroups: Readonly<{
+  Circumstance: RulesetContributionStackingGroupReference<string, string>;
+}> = Object.freeze({
+  Circumstance: rulesetContributionStackingGroup(
+    d20FantasyRuleset,
+    'circumstance',
+  ),
 });
 
 function abilityScore(id: string, label: string) {

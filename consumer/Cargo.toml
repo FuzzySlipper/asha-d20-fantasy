@@ -3,6 +3,7 @@ name = "d20-fantasy-consumer"
 version = "0.1.0"
 edition = "2021"
 publish = false
+default-run = "d20-fantasy-consumer"
 
 [workspace]
 
@@ -10,4 +11,3 @@ publish = false
 asha-rpg = { path = "../vendor/asha-rpg/crates/asha-rpg" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-

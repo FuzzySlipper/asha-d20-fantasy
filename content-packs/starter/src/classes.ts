@@ -4,6 +4,11 @@ import {
   definitionReference,
 } from '@asha-rpg/authoring';
 
+import {
+  d20FantasySelectors,
+  d20FantasyStackingGroups,
+} from '../../../rulesets/d20-fantasy/src/ruleset.js';
+
 const sourceModule = 'content-packs/starter/src/classes.ts';
 
 export const coordinatedFlankerTalent = defineCharacterFeatureDefinition({
@@ -18,12 +23,13 @@ export const coordinatedFlankerTalent = defineCharacterFeatureDefinition({
     tags: ['fighter', 'positional', 'talent'],
   },
   characterFeature: {
-    rollContributions: [
+    contributions: [
       {
         id: 'coordinated-flanker',
-        selector: 'attack',
-        condition: { kind: 'actorFlanksTarget' },
-        amount: 2,
+        selector: d20FantasySelectors.AttackTotal,
+        stackingGroup: d20FantasyStackingGroups.Circumstance,
+        value: { kind: 'constant', value: 2 },
+        predicate: { kind: 'actorFlanksTarget' },
       },
     ],
   },
@@ -41,15 +47,16 @@ export const holdTheLineTalent = defineCharacterFeatureDefinition({
     tags: ['fighter', 'positional', 'talent'],
   },
   characterFeature: {
-    rollContributions: [
+    contributions: [
       {
         id: 'hold-the-line',
-        selector: 'attack',
-        condition: {
+        selector: d20FantasySelectors.AttackTotal,
+        stackingGroup: d20FantasyStackingGroups.Circumstance,
+        value: { kind: 'constant', value: 1 },
+        predicate: {
           kind: 'actorSurrounded',
           minimumHostiles: 2,
         },
-        amount: 1,
       },
     ],
   },
@@ -67,15 +74,16 @@ export const arcaneComposureTalent = defineCharacterFeatureDefinition({
     tags: ['positional', 'talent', 'wizard'],
   },
   characterFeature: {
-    rollContributions: [
+    contributions: [
       {
         id: 'arcane-composure',
-        selector: 'attack',
-        condition: {
+        selector: d20FantasySelectors.AttackTotal,
+        stackingGroup: d20FantasyStackingGroups.Circumstance,
+        value: { kind: 'constant', value: 1 },
+        predicate: {
           kind: 'actorSurrounded',
           minimumHostiles: 3,
         },
-        amount: 1,
       },
     ],
   },

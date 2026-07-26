@@ -5,6 +5,10 @@ import {
   reactionOptionId,
 } from '@asha-rpg/authoring';
 
+import {
+  d20FantasySelectors,
+} from '../../../rulesets/d20-fantasy/src/ruleset.js';
+
 const packageId = 'asha.d20-fantasy.foundation';
 const sourceModule = 'content-packs/foundation/src/procedures.ts';
 
@@ -137,6 +141,7 @@ export const basicWeaponAttackProcedure = defineActionProcedureDefinition({
           statId: actionProcedureParameterReference(attackStat),
         },
         defenseId: actionProcedureParameterReference(defense),
+        contributionSelector: d20FantasySelectors.AttackTotal,
       },
       rollScope: 'perTarget',
       costs: [],
@@ -165,19 +170,23 @@ export const basicWeaponAttackProcedure = defineActionProcedureDefinition({
                 kind: 'operation',
                 operation: {
                   kind: 'damage',
-                  amount: {
-                    kind: 'add',
-                    terms: [
-                      actionProcedureParameterReference(damage),
-                      {
-                        kind: 'readStat',
-                        subject: 'actor',
-                        statId:
-                          actionProcedureParameterReference(damageStat),
-                      },
-                    ],
-                  },
-                  damageType: actionProcedureParameterReference(damageType),
+                  parts: [{
+                    id: 'damage',
+                    amount: {
+                      kind: 'add',
+                      terms: [
+                        actionProcedureParameterReference(damage),
+                        {
+                          kind: 'readStat',
+                          subject: 'actor',
+                          statId:
+                            actionProcedureParameterReference(damageStat),
+                        },
+                      ],
+                    },
+                    damageType: actionProcedureParameterReference(damageType),
+                    tags: [],
+                  }],
                 },
               },
             ],
@@ -212,6 +221,7 @@ export const attackRollDamageProcedure = defineActionProcedureDefinition({
         kind: 'attack',
         modifier: actionProcedureParameterReference(attackBonus),
         defenseId: actionProcedureParameterReference(defense),
+        contributionSelector: d20FantasySelectors.AttackTotal,
       },
       rollScope: 'perTarget',
       costs: [],
@@ -223,8 +233,12 @@ export const attackRollDamageProcedure = defineActionProcedureDefinition({
             kind: 'operation',
             operation: {
               kind: 'damage',
-              amount: actionProcedureParameterReference(damage),
-              damageType: actionProcedureParameterReference(damageType),
+              parts: [{
+                id: 'damage',
+                amount: actionProcedureParameterReference(damage),
+                damageType: actionProcedureParameterReference(damageType),
+                tags: [],
+              }],
             },
           },
         },
@@ -281,21 +295,29 @@ export const savingThrowFullHalfDamageProcedure =
                 kind: 'operation',
                 operation: {
                   kind: 'damage',
-                  amount: actionProcedureParameterReference(damage),
-                  damageType:
-                    actionProcedureParameterReference(damageType),
+                  parts: [{
+                    id: 'damage',
+                    amount: actionProcedureParameterReference(damage),
+                    damageType:
+                      actionProcedureParameterReference(damageType),
+                    tags: [],
+                  }],
                 },
               },
               saved: {
                 kind: 'operation',
                 operation: {
                   kind: 'damage',
-                  amount: {
-                    kind: 'half',
-                    value: actionProcedureParameterReference(damage),
-                  },
-                  damageType:
-                    actionProcedureParameterReference(damageType),
+                  parts: [{
+                    id: 'damage',
+                    amount: {
+                      kind: 'half',
+                      value: actionProcedureParameterReference(damage),
+                    },
+                    damageType:
+                      actionProcedureParameterReference(damageType),
+                    tags: [],
+                  }],
                 },
               },
             },
@@ -381,6 +403,7 @@ export const attackRollDamageConditionProcedure =
           kind: 'attack',
           modifier: actionProcedureParameterReference(attackBonus),
           defenseId: actionProcedureParameterReference(defense),
+          contributionSelector: d20FantasySelectors.AttackTotal,
         },
         rollScope: 'perTarget',
         costs: [],
@@ -395,20 +418,24 @@ export const attackRollDamageConditionProcedure =
                   kind: 'operation',
                   operation: {
                     kind: 'damage',
-                    amount: {
-                      kind: 'add',
-                      terms: [
-                        actionProcedureParameterReference(damage),
-                        {
-                          kind: 'readStat',
-                          subject: 'actor',
-                          statId:
-                            actionProcedureParameterReference(damageStat),
-                        },
-                      ],
-                    },
-                    damageType:
-                      actionProcedureParameterReference(damageType),
+                    parts: [{
+                      id: 'damage',
+                      amount: {
+                        kind: 'add',
+                        terms: [
+                          actionProcedureParameterReference(damage),
+                          {
+                            kind: 'readStat',
+                            subject: 'actor',
+                            statId:
+                              actionProcedureParameterReference(damageStat),
+                          },
+                        ],
+                      },
+                      damageType:
+                        actionProcedureParameterReference(damageType),
+                      tags: [],
+                    }],
                   },
                 },
                 {

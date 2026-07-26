@@ -2,8 +2,8 @@ use std::io::{self, Read};
 
 use asha_rpg::{
     compile_prepared_play_bundle_json, CompiledPlayBundle, RpgActionProposal, RpgAuthoritySession,
-    RpgCommandOutcome, RpgRandomRequest, RpgRandomSource, RpgRandomSourceBinding,
-    RpgRandomSourceFailure, RpgReactionProposal, RpgScenario,
+    RpgCommandOutcome, RpgContributionDisposition, RpgRandomRequest, RpgRandomSource,
+    RpgRandomSourceBinding, RpgRandomSourceFailure, RpgReactionProposal, RpgScenario,
 };
 use serde::Deserialize;
 use serde_json::Value;
@@ -155,11 +155,6 @@ fn assert_positional_talent_behavior(bundle: &CompiledPlayBundle, scenario: &Rpg
         contributions,
         vec![
             (
-                "action.basic-attack".to_owned(),
-                "Basic Attack".to_owned(),
-                5
-            ),
-            (
                 "feature.coordinated-flanker".to_owned(),
                 "Coordinated Flanker".to_owned(),
                 2,
@@ -181,18 +176,11 @@ fn assert_positional_talent_behavior(bundle: &CompiledPlayBundle, scenario: &Rpg
         .position = asha_rpg::GridPosition { x: 4, y: 1 };
     assert_eq!(
         positional_attack(bundle, without_flank).1,
-        vec![
-            (
-                "action.basic-attack".to_owned(),
-                "Basic Attack".to_owned(),
-                5
-            ),
-            (
-                "feature.hold-the-line".to_owned(),
-                "Hold the Line".to_owned(),
-                1,
-            ),
-        ]
+        vec![(
+            "feature.hold-the-line".to_owned(),
+            "Hold the Line".to_owned(),
+            1,
+        ),]
     );
 
     let mut without_surround = scenario.clone();
@@ -204,18 +192,11 @@ fn assert_positional_talent_behavior(bundle: &CompiledPlayBundle, scenario: &Rpg
         .position = asha_rpg::GridPosition { x: 4, y: 2 };
     assert_eq!(
         positional_attack(bundle, without_surround).1,
-        vec![
-            (
-                "action.basic-attack".to_owned(),
-                "Basic Attack".to_owned(),
-                5
-            ),
-            (
-                "feature.coordinated-flanker".to_owned(),
-                "Coordinated Flanker".to_owned(),
-                2,
-            ),
-        ]
+        vec![(
+            "feature.coordinated-flanker".to_owned(),
+            "Coordinated Flanker".to_owned(),
+            2,
+        ),]
     );
 }
 
@@ -258,17 +239,21 @@ fn positional_attack(
         .find_map(|event| match event {
             asha_rpg::RpgDomainEvent::AttackResolved {
                 total,
-                contributions,
+                contribution_ledger,
                 ..
             } => Some((
                 total,
-                contributions
+                contribution_ledger
+                    .candidates
                     .into_iter()
+                    .filter(|contribution| {
+                        contribution.disposition == RpgContributionDisposition::Applied
+                    })
                     .map(|contribution| {
                         (
                             contribution.source_definition_id,
                             contribution.source_label,
-                            contribution.amount,
+                            contribution.applied_value,
                         )
                     })
                     .collect(),

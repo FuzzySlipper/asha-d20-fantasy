@@ -3,3 +3,7 @@ export * from '../content-packs/foundation/src/index.js';
 export * from '../content-packs/starter/src/index.js';
 export * from '../play-bundles/starter.js';
 export * from '../scenarios/starter-skirmish.js';
+export * from '../rulesets/tactical-rollover/src/index.js';
+export * from '../content-packs/tactical-rollover/src/index.js';
+export * from '../play-bundles/tactical-rollover.js';
+export * from '../scenarios/tactical-rollover-skirmish.js';
