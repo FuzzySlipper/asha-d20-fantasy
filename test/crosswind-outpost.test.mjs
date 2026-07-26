@@ -73,6 +73,18 @@ test('crosswind outpost is one clean-room pack, bundle, and setup-only scenario'
     sourceId: 'random.system',
     sourceVersion: 1,
   });
+  for (const participant of crosswindOutpostScenarioTemplate.participants) {
+    assert.deepEqual(
+      participant.definitionIds,
+      [...participant.definitionIds].sort(),
+      `${participant.id} definition identities are canonical`,
+    );
+    assert.deepEqual(
+      participant.featureDefinitionIds ?? [],
+      [...(participant.featureDefinitionIds ?? [])].sort(),
+      `${participant.id} feature identities are canonical`,
+    );
+  }
 
   const scenario = crosswindOutpostScenario('artifact.fixture');
   assert.equal(scenario.playBundleId, 'artifact.fixture');

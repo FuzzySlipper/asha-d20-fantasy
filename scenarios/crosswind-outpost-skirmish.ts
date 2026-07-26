@@ -172,27 +172,28 @@ function participant(
   profileDefinitionId: string,
   profile: ContentParticipantProfileData,
 ) {
+  const definitionIds = [
+    profileDefinitionId,
+    ...profile.definitionReferences.map((reference) =>
+      reference.definitionId
+    ),
+  ].sort();
+  const featureDefinitionIds = profile.featureDefinitions
+    .map((reference) => reference.definitionId)
+    .sort();
+
   return {
     id,
     label,
     teamId,
     position: { x, y },
-    definitionIds: [
-      profileDefinitionId,
-      ...profile.definitionReferences.map((reference) =>
-        reference.definitionId
-      ),
-    ],
+    definitionIds,
     ...(profile.classDefinition === null
       ? {}
       : { classDefinitionId: profile.classDefinition.definitionId }),
-    ...(profile.featureDefinitions.length === 0
+    ...(featureDefinitionIds.length === 0
       ? {}
-      : {
-          featureDefinitionIds: profile.featureDefinitions.map(
-            (reference) => reference.definitionId,
-          ),
-        }),
+      : { featureDefinitionIds }),
     items: profile.items.map((profileItem) => ({
       id: profileItem.id,
       definitionId: profileItem.definition.definitionId,

@@ -41,7 +41,8 @@
     "play:smoke": "npm run build && node scripts/emit-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml",
     "play:tactical-rollover": "npm run build && node scripts/emit-tactical-rollover-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin tactical_rollover",
     "play:context-tactics": "npm run build && node scripts/emit-context-tactics-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin context_tactics",
-    "play:multi-axis-pool": "npm run build && node scripts/emit-multi-axis-pool-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin multi_axis_pool"
+    "play:multi-axis-pool": "npm run build && node scripts/emit-multi-axis-pool-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin multi_axis_pool",
+    "play:crosswind-outpost": "npm run build && node scripts/emit-crosswind-outpost-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin crosswind_outpost"
   },
   "dependencies": {
     "@asha-rpg/authoring": "file:vendor/asha-rpg/packages/authoring",

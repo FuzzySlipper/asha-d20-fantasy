@@ -107,6 +107,13 @@ scenario. It reuses the foundation procedures for item-bound attacks,
 movement, forced movement, healing, conditions, reactions, and a persistent
 field; only its distinct cost-once area attack remains inline.
 
+Its independent public Rust consumer drives the complete setup through
+authority readback. It verifies exact item bindings and random evidence,
+multi-defense attacks, applied/inapplicable/suppressed cross-source
+contributions, typed damage and bounded healing, activation affordability and
+reset, conditions, reaction timing, area derivation, forced movement, spatial
+triggers, atomic rejection, checkpoint restoration, and replay parity.
+
 The engine is pinned as the `vendor/asha-rpg` submodule. Clone recursively, then
 run:
 
@@ -118,6 +125,7 @@ npm run play:smoke
 npm run play:tactical-rollover
 npm run play:context-tactics
 npm run play:multi-axis-pool
+npm run play:crosswind-outpost
 npm run --silent emit:ruleweaver-foundation > /tmp/ruleweaver-foundation.json
 npm run --silent emit:crosswind-outpost > /tmp/crosswind-outpost.json
 ```
