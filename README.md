@@ -26,17 +26,21 @@ content-packs/multi-axis-pool/
   src/
 content-packs/ruleweaver-foundation/
   src/
+content-packs/crosswind-outpost/
+  src/
 play-bundles/
   starter.ts
   tactical-rollover.ts
   context-tactics.ts
   multi-axis-pool.ts
   ruleweaver-foundation.ts
+  crosswind-outpost.ts
 scenarios/
   starter-skirmish.ts
   tactical-rollover-skirmish.ts
   context-tactics-crossing.ts
   multi-axis-pool-crossing.ts
+  crosswind-outpost-skirmish.ts
 src/index.ts                    # repository package facade
 SOURCES.md
 ```
@@ -96,6 +100,13 @@ source, talents, and class composition in separate source modules. It contains
 no participant roster or scripted Scenario; representative content belongs to
 a separate downstream Content Pack.
 
+Crosswind Outpost is that separate representative slice: four original player
+archetypes, four generic adversaries, inert melee/ranged/implement/defensive
+equipment, one dependent Content Pack, one peer PlayBundle, and one setup-only
+scenario. It reuses the foundation procedures for item-bound attacks,
+movement, forced movement, healing, conditions, reactions, and a persistent
+field; only its distinct cost-once area attack remains inline.
+
 The engine is pinned as the `vendor/asha-rpg` submodule. Clone recursively, then
 run:
 
@@ -108,6 +119,7 @@ npm run play:tactical-rollover
 npm run play:context-tactics
 npm run play:multi-axis-pool
 npm run --silent emit:ruleweaver-foundation > /tmp/ruleweaver-foundation.json
+npm run --silent emit:crosswind-outpost > /tmp/crosswind-outpost.json
 ```
 
 Source and licensing details are in [`SOURCES.md`](SOURCES.md).

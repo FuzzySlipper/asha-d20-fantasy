@@ -18,3 +18,6 @@ export * from '../scenarios/multi-axis-pool-crossing.js';
 export * from '../rulesets/ruleweaver-tactics/src/index.js';
 export * from '../content-packs/ruleweaver-foundation/src/index.js';
 export * from '../play-bundles/ruleweaver-foundation.js';
+export * from '../content-packs/crosswind-outpost/src/index.js';
+export * from '../play-bundles/crosswind-outpost.js';
+export * from '../scenarios/crosswind-outpost-skirmish.js';

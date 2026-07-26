@@ -8,6 +8,7 @@ import {
   ruleweaverTacticsBudgets,
   ruleweaverTacticsProfiles,
 } from '../../../rulesets/ruleweaver-tactics/src/ruleset.js';
+import { ruleweaverFoundationCatalogs } from './catalogs.js';
 
 const packageId = 'asha.ruleweaver-tactics.foundation';
 const sourceModule =
@@ -378,8 +379,14 @@ export const spatialPulseProcedure = defineActionProcedureDefinition({
           noRoll: {
             kind: 'operation',
             operation: {
-              kind: 'heal',
-              amount: { kind: 'constant', value: 1 },
+              kind: 'damage',
+              parts: [{
+                id: 'pressure',
+                amount: { kind: 'constant', value: 1 },
+                damageType:
+                  ruleweaverFoundationCatalogs.references.energy,
+                tags: ['spatial-source'],
+              }],
             },
           },
         },

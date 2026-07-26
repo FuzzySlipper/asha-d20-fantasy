@@ -35,7 +35,7 @@ import {
 } from '../dist/src/index.js';
 
 const reviewedAshaRpgPin =
-  '404148365a2d9374433c40380199835e1a03b7a3';
+  'e4d6d1afb5b8387de4ff805d73b2041df29ee590';
 
 test('ruleset declares the accepted tactical vocabulary and authority policies', () => {
   assert.equal(ruleweaverTacticsRuleset.identity.id, 'asha.ruleweaver-tactics');

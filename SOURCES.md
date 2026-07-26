@@ -133,10 +133,30 @@ authored. No predecessor description, branded creature, art, imported
 catalog, transformed dataset, or source-system table was copied or converted.
 The predecessor checkout is neither a build dependency nor a vendored input.
 
-This foundation is pinned to reviewed ASHA RPG revision
-`404148365a2d9374433c40380199835e1a03b7a3`. It is a small reusable mechanical
+This foundation was first reviewed against ASHA RPG revision
+`404148365a2d9374433c40380199835e1a03b7a3` and the repository now pins
+`e4d6d1afb5b8387de4ff805d73b2041df29ee590` for canonical mixed-package
+graph closure. It is a small reusable mechanical
 foundation, not a complete RuleWeaver port and not a D&D 4e compatibility
 implementation. It does not claim character generation or progression,
 derived vitality, rest recovery, exhaustive conditions or target shapes,
 pull/teleport breadth, moving zones, summons, action grants, AI, scripted
 encounters, animation, or bulk content conversion.
+
+## Crosswind Outpost representative content
+
+Crosswind Outpost is a separate original Content Pack and setup-only Scenario
+over the RuleWeaver Tactics foundation. Its Ward Anchor, Pathfinder, Signal
+Guide, Field Shaper, four generic adversaries, equipment names, action names,
+descriptions, identifiers, values, board, and encounter framing were authored
+for this repository. They were not copied, transformed, or mechanically
+converted from the predecessor catalog. The tracked content has no build-time
+or runtime access to `/home/dev/ruleweaver`.
+
+The representative bundle uses public ASHA RPG revision
+`e4d6d1afb5b8387de4ff805d73b2041df29ee590`, which adds canonical
+mixed-package graph closure without weakening package ownership or Rust
+artifact validation. The slice demonstrates only the bounded mechanics named
+in its checked-in tests. It is not a complete RuleWeaver port, not D&D 4e
+compatibility, and not a character progression, campaign-building, AI, bulk
+catalog conversion, or scripted-play system.
