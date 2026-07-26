@@ -59,3 +59,27 @@ does not claim rest recovery, summons, runtime progression, broad reaction
 authoring, temporary vitality, inventory economy, line of effect, cover,
 arbitrary templates, source-system critical damage rules, or source-system
 content compatibility.
+
+## Context Tactics clean-room kit
+
+The Context Tactics Ruleset, Content Pack, PlayBundle, Scenario, names,
+descriptions, identifiers, values, combinations, and encounter are original
+content authored for this repository. They are not adapted from the SRD or a
+surveyed content catalog and do not claim compatibility with Pathfinder,
+Foundry VTT, or any other source system.
+
+The mechanical scope was selected from the sanitized K1 brief in ASHA RPG's
+`docs/first-wave-primitive-catalog.md`, produced by Den task `#6179`. The
+architecture study used bounded evidence from the `foundryvtt/pf2e`
+repository's `v14-dev` ref at
+`91e5c792eeae4ee56610ff58fce28e65953ccbf9`. The survey tool revision was
+`rpg-primitive-survey@4fc9d28c7fe35d0d9e5a6010b886d72f13852d3e`.
+Those handles are mechanical provenance only. No source records, text, names,
+rule-element vocabulary, catalogs, package structure, stat blocks, or
+derived-document behavior were copied or converted.
+
+The kit is pinned to ASHA RPG revision
+`64a7c08815fa9856a1a8e95c767eca5096d74d9f`. It does not claim progression
+trees, persistent-damage timing, arbitrary roll options, general schedulers or
+reaction authoring, cones, elevation, cover, source-system critical rules, or
+source-system content compatibility.

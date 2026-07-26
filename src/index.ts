@@ -7,3 +7,7 @@ export * from '../rulesets/tactical-rollover/src/index.js';
 export * from '../content-packs/tactical-rollover/src/index.js';
 export * from '../play-bundles/tactical-rollover.js';
 export * from '../scenarios/tactical-rollover-skirmish.js';
+export * from '../rulesets/context-tactics/src/index.js';
+export * from '../content-packs/context-tactics/src/index.js';
+export * from '../play-bundles/context-tactics.js';
+export * from '../scenarios/context-tactics-crossing.js';

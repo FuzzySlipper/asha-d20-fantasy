@@ -12,10 +12,14 @@
     "./content-packs/starter": "./dist/content-packs/starter/src/index.js",
     "./rulesets/tactical-rollover": "./dist/rulesets/tactical-rollover/src/index.js",
     "./content-packs/tactical-rollover": "./dist/content-packs/tactical-rollover/src/index.js",
+    "./rulesets/context-tactics": "./dist/rulesets/context-tactics/src/index.js",
+    "./content-packs/context-tactics": "./dist/content-packs/context-tactics/src/index.js",
     "./play-bundles/starter": "./dist/play-bundles/starter.js",
     "./play-bundles/tactical-rollover": "./dist/play-bundles/tactical-rollover.js",
+    "./play-bundles/context-tactics": "./dist/play-bundles/context-tactics.js",
     "./scenarios/starter-skirmish": "./dist/scenarios/starter-skirmish.js",
-    "./scenarios/tactical-rollover-skirmish": "./dist/scenarios/tactical-rollover-skirmish.js"
+    "./scenarios/tactical-rollover-skirmish": "./dist/scenarios/tactical-rollover-skirmish.js",
+    "./scenarios/context-tactics-crossing": "./dist/scenarios/context-tactics-crossing.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -23,7 +27,8 @@
     "test": "npm run build && node --test test/*.test.mjs",
     "emit:prepared": "npm run --silent build && node scripts/emit-prepared.mjs",
     "play:smoke": "npm run build && node scripts/emit-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml",
-    "play:tactical-rollover": "npm run build && node scripts/emit-tactical-rollover-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin tactical_rollover"
+    "play:tactical-rollover": "npm run build && node scripts/emit-tactical-rollover-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin tactical_rollover",
+    "play:context-tactics": "npm run build && node scripts/emit-context-tactics-session-source.mjs | cargo run --quiet --manifest-path consumer/Cargo.toml --bin context_tactics"
   },
   "dependencies": {
     "@asha-rpg/authoring": "file:vendor/asha-rpg/packages/authoring",

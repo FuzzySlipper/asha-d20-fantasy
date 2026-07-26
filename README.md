@@ -8,18 +8,24 @@ rulesets/d20-fantasy/
   src/ruleset.ts
 rulesets/tactical-rollover/
   src/ruleset.ts
+rulesets/context-tactics/
+  src/ruleset.ts
 content-packs/foundation/
   src/procedures.ts
 content-packs/starter/
   src/
 content-packs/tactical-rollover/
   src/
+content-packs/context-tactics/
+  src/
 play-bundles/
   starter.ts
   tactical-rollover.ts
+  context-tactics.ts
 scenarios/
   starter-skirmish.ts
   tactical-rollover-skirmish.ts
+  context-tactics-crossing.ts
 src/index.ts                    # repository package facade
 SOURCES.md
 ```
@@ -52,6 +58,14 @@ damage and responses, before-damage choice, bounded area projection, atomic
 rejection, checkpoint, and replay. The Rust consumer drives the interaction;
 the TypeScript source only authors immutable intent and setup.
 
+The Context Tactics kit is a second, mechanically distinct clean-room Ruleset.
+It uses four ordered outcome bands, bounded contextual band shifts,
+deterministic same-group suppression, separate action and reaction activation
+budgets, a zero-cost activation ceiling, a short named effect, ordered
+per-part responses, and bounded area selection. Its Rust witness records actor,
+target, item, and cell facts as applied, inapplicable, or suppressed authority
+decisions and proves budget reset, effect expiry, atomic rejection, and replay.
+
 The engine is pinned as the `vendor/asha-rpg` submodule. Clone recursively, then
 run:
 
@@ -61,6 +75,7 @@ npm test
 npm run --silent emit:prepared > /tmp/d20-fantasy-prepared.json
 npm run play:smoke
 npm run play:tactical-rollover
+npm run play:context-tactics
 ```
 
 Source and licensing details are in [`SOURCES.md`](SOURCES.md).
