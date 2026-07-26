@@ -314,8 +314,11 @@ export const centeredEffect = defineEffectDefinition({
     rankMaximum: 1,
     stackingId: 'centered-line',
     stacking: 'refresh',
-    durationAnchor: 'sourceTurnStart',
-    durationCount: 2,
+    tenure: {
+      kind: 'fixed',
+      anchor: 'sourceTurnStart',
+      count: 2,
+    },
     contributions: [
       {
         id: 'centered-edge',

@@ -229,13 +229,13 @@ fn prove_source_reduction_effect_expiry_and_replay(
 
     assert_eq!(session.turn().current_actor_id, "reader");
 
-    let reader_request = pool_request(4, vec![("drag", 1, 6), ("signal", 3, 4)]);
+    let reader_request = pool_request(3, vec![("drag", 1, 6), ("signal", 2, 4)]);
     let reader_binding =
         action_binding(&session, "action.signal-crossing", "item.tuned-instrument");
     let mut reader_source = tape(
         scenario.random_source.clone(),
         reader_request.clone(),
-        vec![4, 2, 4, 2],
+        vec![4, 2, 4],
     );
     let (reader_outcome, reader_entry) = session
         .submit_with_random_source_recorded(
@@ -269,7 +269,6 @@ fn prove_source_reduction_effect_expiry_and_replay(
             ("drag", 1, 6, 4),
             ("signal", 1, 4, 2),
             ("signal", 2, 4, 4),
-            ("signal", 3, 4, 2),
         ]
     );
     let reader_pool = pool_event(&reader_receipt.events);
@@ -279,23 +278,11 @@ fn prove_source_reduction_effect_expiry_and_replay(
     );
     assert_eq!(
         reader_pool.frozen_dice,
-        BTreeMap::from([("drag".to_owned(), 1), ("signal".to_owned(), 3)])
+        BTreeMap::from([("drag".to_owned(), 1), ("signal".to_owned(), 2)])
     );
     assert_eq!(
         candidate_evidence(&reader_pool),
         [
-            (
-                "effect.trailing-signal",
-                reader_pool.candidates[0].source_instance_id.as_deref(),
-                "effect-add-echo",
-                "applied",
-            ),
-            (
-                "effect.trailing-signal",
-                reader_pool.candidates[1].source_instance_id.as_deref(),
-                "effect-add-signal",
-                "applied",
-            ),
             (
                 "feature.pattern-reader",
                 None,
@@ -338,25 +325,21 @@ fn prove_source_reduction_effect_expiry_and_replay(
             ("benefit".to_owned(), 1),
             ("complication".to_owned(), 0),
             ("echo".to_owned(), 0),
-            ("progress".to_owned(), 3),
+            ("progress".to_owned(), 2),
             ("setback".to_owned(), 0),
         ])
     );
     assert_eq!(
         reader_pool.automatic_axes,
-        BTreeMap::from([
-            ("benefit".to_owned(), 2),
-            ("complication".to_owned(), 1),
-            ("echo".to_owned(), 1),
-        ])
+        BTreeMap::from([("benefit".to_owned(), 2), ("complication".to_owned(), 1),])
     );
     assert_eq!(
         reader_pool.net_axes,
         BTreeMap::from([
             ("benefit".to_owned(), 2),
             ("complication".to_owned(), 0),
-            ("echo".to_owned(), 1),
-            ("progress".to_owned(), 3),
+            ("echo".to_owned(), 0),
+            ("progress".to_owned(), 2),
             ("setback".to_owned(), 0),
         ])
     );

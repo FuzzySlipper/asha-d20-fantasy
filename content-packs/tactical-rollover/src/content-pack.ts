@@ -282,8 +282,11 @@ export const measuredEffect = defineEffectDefinition({
     rankMaximum: 1,
     stackingId: 'measured',
     stacking: 'refresh',
-    durationAnchor: 'sourceTurnStart',
-    durationCount: 2,
+    tenure: {
+      kind: 'fixed',
+      anchor: 'sourceTurnStart',
+      count: 2,
+    },
     contributions: [
       {
         id: 'measured-bonus',

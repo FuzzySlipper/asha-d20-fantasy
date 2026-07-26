@@ -136,8 +136,11 @@ test('the closed kit declares F0 through F5 semantics without TypeScript executi
   );
 
   const effect = materialized(prepared, 'effect.centered-line');
-  assert.equal(effect.semantic.durationAnchor, 'sourceTurnStart');
-  assert.equal(effect.semantic.durationCount, 2);
+  assert.deepEqual(effect.semantic.tenure, {
+    kind: 'fixed',
+    anchor: 'sourceTurnStart',
+    count: 2,
+  });
   assert.equal(effect.semantic.contributions[0].value.value, 4);
 
   const responses = materialized(prepared, 'feature.layered-ward')

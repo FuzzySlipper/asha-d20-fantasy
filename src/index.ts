@@ -15,3 +15,6 @@ export * from '../rulesets/multi-axis-pool/src/index.js';
 export * from '../content-packs/multi-axis-pool/src/index.js';
 export * from '../play-bundles/multi-axis-pool.js';
 export * from '../scenarios/multi-axis-pool-crossing.js';
+export * from '../rulesets/ruleweaver-tactics/src/index.js';
+export * from '../content-packs/ruleweaver-foundation/src/index.js';
+export * from '../play-bundles/ruleweaver-foundation.js';

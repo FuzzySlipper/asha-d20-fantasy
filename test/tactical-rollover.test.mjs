@@ -95,8 +95,11 @@ test('the kit prepares typed scalar, item, effect, packet, response, and area se
   assert.equal('program' in blade.semantic, false);
 
   const effect = materialized(prepared, 'effect.measured');
-  assert.equal(effect.semantic.durationAnchor, 'sourceTurnStart');
-  assert.equal(effect.semantic.durationCount, 2);
+  assert.deepEqual(effect.semantic.tenure, {
+    kind: 'fixed',
+    anchor: 'sourceTurnStart',
+    count: 2,
+  });
   assert.equal(
     effect.semantic.contributions[0].predicate.kind,
     'effectActive',

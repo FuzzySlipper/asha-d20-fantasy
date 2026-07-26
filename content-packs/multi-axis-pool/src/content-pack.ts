@@ -85,8 +85,11 @@ export const trailingSignal = defineEffectDefinition({
     rankMaximum: 1,
     stackingId: 'trailing-signal',
     stacking: 'refresh',
-    durationAnchor: 'targetTurnStart',
-    durationCount: 2,
+    tenure: {
+      kind: 'fixed',
+      anchor: 'targetTurnStart',
+      count: 2,
+    },
     poolContributions: [
       {
         id: 'effect-add-signal',

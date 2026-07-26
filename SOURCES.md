@@ -109,3 +109,34 @@ derived from a pool, specialized pool user interface, probability analysis,
 opposed pools, rerolls, upgrades outside the explicit replacement rule,
 critical-result tables, equipment inventory workflows, source-system content,
 or source-system compatibility.
+
+## RuleWeaver Tactics clean-room foundation
+
+The RuleWeaver Tactics foundation used the local `/home/dev/ruleweaver`
+checkout at exact revision
+`04ef26d0eef1ba478a2c39b78cca61fe82b15be5` solely as bounded design
+evidence. The reviewed inventory examined the current design authorities
+`design-doc.md`, `docs/design/action-economy-conditions-targeting.md`,
+`docs/design/action-system-architecture.md`,
+`docs/design/authoritative-targeting.md`,
+`docs/design/class-talent-system.md`, `docs/design/equipment-system.md`,
+`docs/design/implement-system.md`,
+`docs/design/condition-modifier-coverage.md`,
+`docs/design/movement-trigger-reaction-semantics.md`, and
+`docs/design/zone-conjuration-system.md`. A small set of action, class,
+participant, and tutorial-setup records was inspected only to confirm that
+those mechanical shapes had concrete predecessor witnesses.
+
+The public names, descriptions, identifiers, values, item records, class and
+talent examples, and spatial-source example in this repository were newly
+authored. No predecessor description, branded creature, art, imported
+catalog, transformed dataset, or source-system table was copied or converted.
+The predecessor checkout is neither a build dependency nor a vendored input.
+
+This foundation is pinned to reviewed ASHA RPG revision
+`404148365a2d9374433c40380199835e1a03b7a3`. It is a small reusable mechanical
+foundation, not a complete RuleWeaver port and not a D&D 4e compatibility
+implementation. It does not claim character generation or progression,
+derived vitality, rest recovery, exhaustive conditions or target shapes,
+pull/teleport breadth, moving zones, summons, action grants, AI, scripted
+encounters, animation, or bulk content conversion.

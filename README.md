@@ -12,6 +12,8 @@ rulesets/context-tactics/
   src/ruleset.ts
 rulesets/multi-axis-pool/
   src/ruleset.ts
+rulesets/ruleweaver-tactics/
+  src/ruleset.ts
 content-packs/foundation/
   src/procedures.ts
 content-packs/starter/
@@ -22,11 +24,14 @@ content-packs/context-tactics/
   src/
 content-packs/multi-axis-pool/
   src/
+content-packs/ruleweaver-foundation/
+  src/
 play-bundles/
   starter.ts
   tactical-rollover.ts
   context-tactics.ts
   multi-axis-pool.ts
+  ruleweaver-foundation.ts
 scenarios/
   starter-skirmish.ts
   tactical-rollover-skirmish.ts
@@ -82,6 +87,15 @@ spends one fixed resource while preserving a second; rejects mismatched typed
 random evidence atomically; expires the short effect exactly; and replays to
 the same authority hash and log.
 
+The RuleWeaver Tactics foundation is an independent clean-room tactical
+Ruleset and shared Content Pack. The Ruleset declares six explicit attributes,
+four defenses, a natural-20 critical scalar profile, Standard/Bonus/Reaction
+budgets, and weighted movement allowance. The foundation keeps shared
+procedures, inert items, action invocations, typed conditions, a fixed spatial
+source, talents, and class composition in separate source modules. It contains
+no participant roster or scripted Scenario; representative content belongs to
+a separate downstream Content Pack.
+
 The engine is pinned as the `vendor/asha-rpg` submodule. Clone recursively, then
 run:
 
@@ -93,6 +107,7 @@ npm run play:smoke
 npm run play:tactical-rollover
 npm run play:context-tactics
 npm run play:multi-axis-pool
+npm run --silent emit:ruleweaver-foundation > /tmp/ruleweaver-foundation.json
 ```
 
 Source and licensing details are in [`SOURCES.md`](SOURCES.md).

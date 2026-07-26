@@ -191,9 +191,10 @@ test('classes and talents are explicit materialized content and Scenario selecti
     [{
       schema: {
         identity: 'asha.rpg.scalar-contribution',
-        version: 1,
+        version: 2,
       },
       id: 'coordinated-flanker',
+      subject: 'actor',
       selector: {
         rulesetId: 'asha.d20-fantasy',
         id: 'attack-total',
@@ -214,9 +215,10 @@ test('classes and talents are explicit materialized content and Scenario selecti
     [{
       schema: {
         identity: 'asha.rpg.scalar-contribution',
-        version: 1,
+        version: 2,
       },
       id: 'hold-the-line',
+      subject: 'actor',
       selector: {
         rulesetId: 'asha.d20-fantasy',
         id: 'attack-total',

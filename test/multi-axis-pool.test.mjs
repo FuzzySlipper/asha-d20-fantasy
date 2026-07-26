@@ -121,8 +121,11 @@ test('the closed kit retains original pool structure and source contracts', () =
   );
 
   const effect = materialized(prepared, 'effect.trailing-signal');
-  assert.equal(effect.semantic.durationAnchor, 'targetTurnStart');
-  assert.equal(effect.semantic.durationCount, 2);
+  assert.deepEqual(effect.semantic.tenure, {
+    kind: 'fixed',
+    anchor: 'targetTurnStart',
+    count: 2,
+  });
   assert.deepEqual(
     effect.semantic.poolContributions.map(
       (contribution) => contribution.effect.kind,
