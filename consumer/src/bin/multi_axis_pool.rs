@@ -310,6 +310,12 @@ fn prove_source_reduction_effect_expiry_and_replay(
                 "inapplicable",
             ),
             (
+                "feature.pattern-reader",
+                None,
+                "actor-suppressed-benefit",
+                "suppressed",
+            ),
+            (
                 "item.tuned-instrument",
                 Some("reader-instrument"),
                 "item-add-complication",

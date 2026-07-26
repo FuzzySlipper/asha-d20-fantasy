@@ -90,6 +90,11 @@ test('the closed kit retains original pool structure and source contracts', () =
         kind: 'addDice',
         predicate: 'boundItemTag',
       },
+      {
+        id: 'actor-suppressed-benefit',
+        kind: 'addAxis',
+        predicate: 'always',
+      },
     ],
   );
 

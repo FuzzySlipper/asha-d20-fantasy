@@ -48,6 +48,12 @@ export const multiAxisPoolRuleset = defineRuleset({
         label: 'Pool sum',
         policy: 'sum',
       },
+      {
+        id: 'pool-peak',
+        version: 1,
+        label: 'Pool peak',
+        policy: 'greatest',
+      },
     ],
     heterogeneousPoolProfiles: [
       {
@@ -146,8 +152,13 @@ export const multiAxisPoolRuleset = defineRuleset({
 });
 
 export const multiAxisPoolStackingGroups: Readonly<{
+  PoolPeak: RulesetContributionStackingGroupReference<string, string>;
   PoolSum: RulesetContributionStackingGroupReference<string, string>;
 }> = Object.freeze({
+  PoolPeak: rulesetContributionStackingGroup(
+    multiAxisPoolRuleset,
+    'pool-peak',
+  ),
   PoolSum: rulesetContributionStackingGroup(
     multiAxisPoolRuleset,
     'pool-sum',

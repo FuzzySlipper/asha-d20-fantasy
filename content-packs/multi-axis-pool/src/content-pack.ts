@@ -231,7 +231,7 @@ export const patternReader = defineCharacterFeatureDefinition({
       {
         id: 'actor-add-benefit',
         profile: multiAxisPoolProfiles.SignalCrossing,
-        stackingGroup: multiAxisPoolStackingGroups.PoolSum,
+        stackingGroup: multiAxisPoolStackingGroups.PoolPeak,
         effect: { kind: 'addAxis', axisId: 'benefit', value: 2 },
         predicate: { kind: 'always' },
       },
@@ -241,6 +241,13 @@ export const patternReader = defineCharacterFeatureDefinition({
         stackingGroup: multiAxisPoolStackingGroups.PoolSum,
         effect: { kind: 'addDice', dieTypeId: 'drag', delta: 1 },
         predicate: { kind: 'boundItemTag', tag: 'alternate' },
+      },
+      {
+        id: 'actor-suppressed-benefit',
+        profile: multiAxisPoolProfiles.SignalCrossing,
+        stackingGroup: multiAxisPoolStackingGroups.PoolPeak,
+        effect: { kind: 'addAxis', axisId: 'benefit', value: 1 },
+        predicate: { kind: 'always' },
       },
     ],
   },
